@@ -1,99 +1,260 @@
-# 🍥Fuwari  
-![Node.js >= 20](https://img.shields.io/badge/node.js-%3E%3D20-brightgreen) 
-![pnpm >= 9](https://img.shields.io/badge/pnpm-%3E%3D9-blue) 
-[![DeepWiki](https://img.shields.io/badge/DeepWiki-saicaca%2Ffuwari-blue.svg?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAAAAXNSR0IArs4c6QAAA05JREFUaEPtmUtyEzEQhtWTQyQLHNak2AB7ZnyXZMEjXMGeK/AIi+QuHrMnbChYY7MIh8g01fJoopFb0uhhEqqcbWTp06/uv1saEDv4O3n3dV60RfP947Mm9/SQc0ICFQgzfc4CYZoTPAswgSJCCUJUnAAoRHOAUOcATwbmVLWdGoH//PB8mnKqScAhsD0kYP3j/Yt5LPQe2KvcXmGvRHcDnpxfL2zOYJ1mFwrryWTz0advv1Ut4CJgf5uhDuDj5eUcAUoahrdY/56ebRWeraTjMt/00Sh3UDtjgHtQNHwcRGOC98BJEAEymycmYcWwOprTgcB6VZ5JK5TAJ+fXGLBm3FDAmn6oPPjR4rKCAoJCal2eAiQp2x0vxTPB3ALO2CRkwmDy5WohzBDwSEFKRwPbknEggCPB/imwrycgxX2NzoMCHhPkDwqYMr9tRcP5qNrMZHkVnOjRMWwLCcr8ohBVb1OMjxLwGCvjTikrsBOiA6fNyCrm8V1rP93iVPpwaE+gO0SsWmPiXB+jikdf6SizrT5qKasx5j8ABbHpFTx+vFXp9EnYQmLx02h1QTTrl6eDqxLnGjporxl3NL3agEvXdT0WmEost648sQOYAeJS9Q7bfUVoMGnjo4AZdUMQku50McDcMWcBPvr0SzbTAFDfvJqwLzgxwATnCgnp4wDl6Aa+Ax283gghmj+vj7feE2KBBRMW3FzOpLOADl0Isb5587h/U4gGvkt5v60Z1VLG8BhYjbzRwyQZemwAd6cCR5/XFWLYZRIMpX39AR0tjaGGiGzLVyhse5C9RKC6ai42ppWPKiBagOvaYk8lO7DajerabOZP46Lby5wKjw1HCRx7p9sVMOWGzb/vA1hwiWc6jm3MvQDTogQkiqIhJV0nBQBTU+3okKCFDy9WwferkHjtxib7t3xIUQtHxnIwtx4mpg26/HfwVNVDb4oI9RHmx5WGelRVlrtiw43zboCLaxv46AZeB3IlTkwouebTr1y2NjSpHz68WNFjHvupy3q8TFn3Hos2IAk4Ju5dCo8B3wP7VPr/FGaKiG+T+v+TQqIrOqMTL1VdWV1DdmcbO8KXBz6esmYWYKPwDL5b5FA1a0hwapHiom0r/cKaoqr+27/XcrS5UwSMbQAAAABJRU5ErkJggg==)](https://deepwiki.com/saicaca/fuwari)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsaicaca%2Ffuwari.svg?type=shield&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsaicaca%2Ffuwari?ref=badge_shield&issueType=license)
+````md
+# 壢中科研（CLSC）官方網站
 
-A static blog template built with [Astro](https://astro.build).
+![Astro](https://img.shields.io/badge/Astro-5.x-FF5D01?logo=astro)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.x-38BDF8?logo=tailwindcss)
+![Firebase](https://img.shields.io/badge/Firebase-Authentication-FFCA28?logo=firebase)
+![Cloudflare Pages](https://img.shields.io/badge/Cloudflare-Pages-F38020?logo=cloudflare)
 
-[**🖥️ Live Demo (Vercel)**](https://fuwari.vercel.app)
+> 壢中科研（CLSC）官方網站，基於 **Fuwari** 建置，使用 **Astro + TypeScript + Tailwind CSS** 開發，並整合 Firebase Authentication 與留言功能。
 
-![Preview Image](https://raw.githubusercontent.com/saicaca/resource/main/fuwari/home.png)
-
-🌏 README in
-[**中文**](https://github.com/saicaca/fuwari/blob/main/docs/README.zh-CN.md) /
-[**日本語**](https://github.com/saicaca/fuwari/blob/main/docs/README.ja.md) /
-[**한국어**](https://github.com/saicaca/fuwari/blob/main/docs/README.ko.md) /
-[**Español**](https://github.com/saicaca/fuwari/blob/main/docs/README.es.md) /
-[**ไทย**](https://github.com/saicaca/fuwari/blob/main/docs/README.th.md) /
-[**Tiếng Việt**](https://github.com/saicaca/fuwari/blob/main/docs/README.vi.md) /
-[**Bahasa Indonesia**](https://github.com/saicaca/fuwari/blob/main/docs/README.id.md) (Provided by the community and may not always be up-to-date)
-
-## ✨ Features
-
-- [x] Built with [Astro](https://astro.build) and [Tailwind CSS](https://tailwindcss.com)
-- [x] Smooth animations and page transitions
-- [x] Light / dark mode
-- [x] Customizable theme colors & banner
-- [x] Responsive design
-- [x] Search functionality with [Pagefind](https://pagefind.app/)
-- [x] [Markdown extended features](https://github.com/saicaca/fuwari?tab=readme-ov-file#-markdown-extended-syntax)
-- [x] Table of contents
-- [x] RSS feed
-
-## 🚀 Getting Started
-
-1. Create your blog repository:
-    - [Generate a new repository](https://github.com/saicaca/fuwari/generate) from this template or fork this repository.
-    - Or run one of the following commands:
-       ```sh
-       npm create fuwari@latest
-       yarn create fuwari
-       pnpm create fuwari@latest
-       bun create fuwari@latest
-       deno run -A npm:create-fuwari@latest
-       ```
-2. To edit your blog locally, clone your repository, run `pnpm install` to install dependencies.
-    - Install [pnpm](https://pnpm.io) `npm install -g pnpm` if you haven't.
-3. Edit the config file `src/config.ts` to customize your blog.
-4. Run `pnpm new-post <filename>` to create a new post and edit it in `src/content/posts/`.
-5. Deploy your blog to Vercel, Netlify, GitHub Pages, etc. following [the guides](https://docs.astro.build/en/guides/deploy/). You need to edit the site configuration in `astro.config.mjs` before deployment.
-
-## 📝 Frontmatter of Posts
-
-```yaml
 ---
-title: My First Blog Post
-published: 2023-09-09
-description: This is the first post of my new Astro blog.
-image: ./cover.jpg
-tags: [Foo, Bar]
-category: Front-end
-draft: false
-lang: jp      # Set only if the post's language differs from the site's language in `config.ts`
+
+## ✨ 功能
+
+- 📰 Markdown 文章系統
+- 📖 社團介紹
+- 👥 社員介紹
+- 🏆 歷屆成果
+- 📚 社課教材
+- 🎓 年度幹部
+- 🔗 友站連結
+- 📝 留言板（Firebase）
+- 🔐 Google / Email 登入
+- 🌙 深色模式
+- 🔍 SEO
+- 📡 RSS Feed
+- 🗺 Sitemap
+- ☁️ Cloudflare Pages 自動部署
+
 ---
+
+## 🛠 技術
+
+- Astro
+- TypeScript
+- Tailwind CSS
+- Firebase Authentication
+- Firebase Firestore
+- pnpm
+- Cloudflare Pages
+- GitHub Actions
+
+---
+
+## 📁 專案結構
+
+```text
+.
+├── public/
+│   ├── logo.png
+│   └── banner.jpg
+│
+├── src/
+│   ├── components/
+│   ├── content/
+│   │   ├── posts/
+│   │   ├── members/
+│   │   ├── officers/
+│   │   ├── resources/
+│   │   ├── achievements/
+│   │   └── links/
+│   │
+│   ├── layouts/
+│   ├── pages/
+│   ├── lib/
+│   │   └── firebase.ts
+│   ├── config.ts
+│   └── content.config.ts
+│
+├── package.json
+├── astro.config.mjs
+└── README.md
 ```
 
-## 🧩 Markdown Extended Syntax
+---
 
-In addition to Astro's default support for [GitHub Flavored Markdown](https://github.github.com/gfm/), several extra Markdown features are included:
+## 🚀 安裝
 
-- Admonitions ([Preview and Usage](https://fuwari.vercel.app/posts/markdown-extended/#admonitions))
-- GitHub repository cards ([Preview and Usage](https://fuwari.vercel.app/posts/markdown-extended/#github-repository-cards))
-- Enhanced code blocks with Expressive Code ([Preview](https://fuwari.vercel.app/posts/expressive-code/) / [Docs](https://expressive-code.com/))
+### Clone
 
-## ⚡ Commands
+```bash
+git clone https://github.com/chenbochao0807/clscweb.git
 
-All commands are run from the root of the project, from a terminal:
+cd clscweb/fuwari
+```
 
-| Command                    | Action                                              |
-|:---------------------------|:----------------------------------------------------|
-| `pnpm install`             | Installs dependencies                               |
-| `pnpm dev`                 | Starts local dev server at `localhost:4321`         |
-| `pnpm build`               | Build your production site to `./dist/`             |
-| `pnpm preview`             | Preview your build locally, before deploying        |
-| `pnpm check`               | Run checks for errors in your code                  |
-| `pnpm format`              | Format your code using Biome                        |
-| `pnpm new-post <filename>` | Create a new post                                   |
-| `pnpm astro ...`           | Run CLI commands like `astro add`, `astro check`    |
-| `pnpm astro --help`        | Get help using the Astro CLI                        |
+### 安裝
 
-## ✏️ Contributing
+```bash
+pnpm install
+```
 
-Check out the [Contributing Guide](https://github.com/saicaca/fuwari/blob/main/CONTRIBUTING.md) for details on how to contribute to this project.
+### 本機執行
 
-## 📄 License
+```bash
+pnpm dev
+```
 
-This project is licensed under the MIT License.
+開啟：
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsaicaca%2Ffuwari.svg?type=large&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsaicaca%2Ffuwari?ref=badge_large&issueType=license)
+```
+http://localhost:4321
+```
+
+---
+
+## 📦 Build
+
+```bash
+pnpm build
+```
+
+預覽：
+
+```bash
+pnpm preview
+```
+
+---
+
+## 🔥 Firebase
+
+建立 `.env`：
+
+```env
+PUBLIC_FIREBASE_API_KEY=
+PUBLIC_FIREBASE_AUTH_DOMAIN=
+PUBLIC_FIREBASE_PROJECT_ID=
+PUBLIC_FIREBASE_STORAGE_BUCKET=
+PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+PUBLIC_FIREBASE_APP_ID=
+```
+
+啟用：
+
+- Authentication
+  - Google
+  - Email / Password
+
+- Firestore Database
+
+---
+
+## ☁️ Cloudflare Pages
+
+Build Command
+
+```text
+pnpm build
+```
+
+Output Directory
+
+```text
+dist
+```
+
+Node.js
+
+```text
+22
+```
+
+---
+
+## 📖 新增文章
+
+建立：
+
+```text
+src/content/posts/
+```
+
+範例：
+
+```md
+---
+title: "文章標題"
+published: 2026-07-09
+description: "文章簡介"
+tags:
+  - CLSC
+category: 公告
+draft: false
+---
+
+文章內容...
+```
+
+---
+
+## 👥 新增社員
+
+放置於：
+
+```text
+src/content/members/
+```
+
+---
+
+## 📚 新增教材
+
+放置於：
+
+```text
+src/content/resources/
+```
+
+---
+
+## 🏆 新增成果
+
+放置於：
+
+```text
+src/content/achievements/
+```
+
+---
+
+## 🔐 留言功能
+
+登入方式：
+
+- Google
+- Email
+
+功能：
+
+- 新增留言
+- 編輯自己的留言
+- 刪除自己的留言
+- 管理員刪除所有留言
+
+---
+
+## 📜 授權
+
+本專案以 MIT License 發布。
+
+---
+
+## 🙌 致謝
+
+- Fuwari
+- Astro
+- Tailwind CSS
+- Firebase
+- Cloudflare
+
+---
+
+# CLSC
+
+**Computer & Learning Science Club**
+
+桃園市立中壢高級中學科研社官方網站。
+````
