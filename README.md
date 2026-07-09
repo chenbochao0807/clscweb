@@ -253,8 +253,5 @@ src/content/achievements/
 ---
 
 # CLSC
-
-**Computer & Learning Science Club**
-
-桃園市立中壢高級中學科研社官方網站。
+。
 ````
