@@ -1,0 +1,17 @@
+---
+import { getCollection } from "astro:content";
+import ResourceGrid from "../components/ResourceGrid.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import MainGridLayout from "../layouts/MainGridLayout.astro";
+
+const resources = (await getCollection("resources")).sort(
+	(a, b) => a.data.order - b.data.order,
+);
+---
+
+<MainGridLayout title="社課教材" description="壢中科研社課教材與專題資源">
+  <section class="card-base border border-[var(--line-divider)] p-6 md:p-8">
+    <SectionHeader title="社課教材" eyebrow="Resources" description="依 Chemistry、Biology、Physics、Competition、Slides、GitHub 分類整理。" />
+    <ResourceGrid resources={resources} />
+  </section>
+</MainGridLayout>

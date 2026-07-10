@@ -2,14 +2,46 @@
 
 import { profileConfig } from "../config";
 import { url } from "../utils/url-utils";
+import { Icon } from "astro-icon/components";
 
 const currentYear = new Date().getFullYear();
+const links = [
+    {
+        name: "GitHub",
+        href: "https://github.com/chenbochao0807/clscweb",
+        icon: "fa6-brands:github",
+    },
+    {
+        name: "Instagram",
+        href: "https://www.instagram.com/_clsc16th_/",
+        icon: "fa6-brands:instagram",
+    },
+    {
+        name: "Facebook",
+        href: "https://www.facebook.com/CLSC.Is.Awesome/?locale=zh_TW",
+        icon: "fa6-brands:facebook",
+    },
+];
 ---
 
 <!--<div class="border-t border-[var(&#45;&#45;primary)] mx-16 border-dashed py-8 max-w-[var(&#45;&#45;page-width)] flex flex-col items-center justify-center px-6">-->
 <div class="transition border-t border-black/10 dark:border-white/15 my-10 border-dashed mx-32"></div>
 <!--<div class="transition bg-[oklch(92%_0.01_var(&#45;&#45;hue))] dark:bg-black rounded-2xl py-8 mt-4 mb-8 flex flex-col items-center justify-center px-6">-->
 <div class="transition border-dashed border-[oklch(85%_0.01_var(--hue))] dark:border-white/15 rounded-2xl mb-12 flex flex-col items-center justify-center px-6">
+    <nav class="mb-4 flex flex-wrap justify-center gap-3" aria-label="Footer social links">
+        {links.map((link) => (
+            <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-regular h-10 rounded-xl px-3 text-sm font-semibold"
+                aria-label={`CLSC ${link.name}`}
+            >
+                <Icon name={link.icon} class="mr-2 text-lg" />
+                {link.name}
+            </a>
+        ))}
+    </nav>
     <div class="transition text-50 text-sm text-center">
         &copy; <span id="copyright-year">{currentYear}</span> {profileConfig.name}. All Rights Reserved. /
         <a class="transition link text-[var(--primary)] font-medium" target="_blank" href={url('rss.xml')}>RSS</a> /

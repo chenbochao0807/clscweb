@@ -1,9 +1,34 @@
-# About
-This is the demo site for [Fuwari](https://github.com/saicaca/fuwari).
+# 壢中科研
 
-::github{repo="saicaca/fuwari"}
+壢中科研是國立中央大學附屬中壢高級中學的科學研究社群。我們以 **探索、研究、實驗、忠誠** 為核心
 
-> ### Sources of images used in this site
-> - [Unsplash](https://unsplash.com/)
-> - [星と少女](https://www.pixiv.net/artworks/108916539) by [Stella](https://www.pixiv.net/users/93273965)
-> - [Rabbit - v1.4 Showcase](https://civitai.com/posts/586908) by [Rabbit_YourMajesty](https://civitai.com/user/Rabbit_YourMajesty)
+![壢中科研活動橫幅](/banner.jpg)
+
+## 我們在幹嘛
+
+- 設計化學、生物、物理與跨領域社課
+- 練習實驗安全、觀察紀錄與資料整理
+- 整理教材、簡報、與活動紀錄
+- 做跟科研無關的事例如: 
+
+## 社團精神
+
+國家棟樑、和平相處、友善溝通
+
+## 幹部與分工
+
+社團由社長、副社長、文書、總務、資訊與教學共同維護。
+
+[查看社員介紹](/members/)
+
+## 專案與資源
+
+網站、教材與部分專題資源會逐步整理成可長期維護的 Markdown 內容。
+
+::github{repo="chenbochao0807/clscweb"}
+
+## 加入我們
+
+如果你對科學研究、實驗設計、程式有興趣，歡迎加入壢中科研。
+
+[加入我們](/join/)

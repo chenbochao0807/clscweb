@@ -1,0 +1,17 @@
+---
+import { getCollection } from "astro:content";
+import MemberGrid from "../components/MemberGrid.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import MainGridLayout from "../layouts/MainGridLayout.astro";
+
+const members = (await getCollection("members")).sort(
+	(a, b) => a.data.order - b.data.order,
+);
+---
+
+<MainGridLayout title="幹部介紹" description="幹部介紹">
+    <section class="card-base border border-[var(--line-divider)] p-6 md:p-8">
+        <SectionHeader title="幹部介紹" eyebrow="Members" description="支援照片、職位、簡介與社群連結maybe。" />
+        <MemberGrid members={members} />
+    </section>
+</MainGridLayout>

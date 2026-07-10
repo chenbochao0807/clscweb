@@ -1,0 +1,61 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import { Icon } from "astro-icon/components";
+import Markdown from "./misc/Markdown.astro";
+
+interface Props {
+	friends: CollectionEntry<"friends">[];
+}
+
+const { friends } = Astro.props;
+const renderedFriends = await Promise.all(
+	friends.map(async (friend) => ({
+		friend,
+		Content: (await render(friend)).Content,
+	})),
+);
+---
+
+<div class="grid gap-4 md:grid-cols-2">
+	{renderedFriends.map(({ friend, Content }) => (
+		<article class="card-base border border-[var(--line-divider)] p-6">
+			<div class="flex items-center gap-4">
+				{friend.data.logo ? (
+					<img
+						src={friend.data.logo}
+						alt={`${friend.data.name} logo`}
+						class="h-16 w-16 rounded-2xl object-cover"
+						loading="lazy"
+						decoding="async"
+					/>
+				) : (
+					<div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--btn-regular-bg)] text-[var(--primary)]">
+						<Icon name="material-symbols:groups-rounded" class="text-3xl" />
+					</div>
+				)}
+				<div>
+					<h2 class="text-xl font-bold text-[var(--text-normal)]">{friend.data.name}</h2>
+					<p class="mt-1 text-sm font-medium text-[var(--text-muted)]">{friend.data.school}</p>
+				</div>
+			</div>
+			<Markdown class="mt-5 text-sm">
+				<Content />
+			</Markdown>
+			<div class="mt-5 flex flex-wrap gap-2">
+				{friend.data.website && (
+					<a href={friend.data.website} target="_blank" rel="noopener noreferrer" class="btn-regular h-10 rounded-xl px-3 text-sm font-semibold">
+						<Icon name="material-symbols:language" class="mr-2 text-lg" />
+						Website
+					</a>
+				)}
+				{friend.data.instagram && (
+					<a href={friend.data.instagram} target="_blank" rel="noopener noreferrer" class="btn-regular h-10 rounded-xl px-3 text-sm font-semibold">
+						<Icon name="fa6-brands:instagram" class="mr-2 text-lg" />
+						Instagram
+					</a>
+				)}
+			</div>
+		</article>
+	))}
+</div>

@@ -1,0 +1,17 @@
+---
+import { getCollection } from "astro:content";
+import FriendsGrid from "../components/FriendsGrid.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import MainGridLayout from "../layouts/MainGridLayout.astro";
+
+const friends = (await getCollection("friends")).sort(
+	(a, b) => a.data.order - b.data.order,
+);
+---
+
+<MainGridLayout title="友社" description="壢中科研友社與合作社群">
+    <section class="card-base border border-[var(--line-divider)] p-6 md:p-8">
+        <SectionHeader title="友社" eyebrow="Friends" description="整理友社 Logo、學校、網站與 Instagram 連結。" />
+        <FriendsGrid friends={friends} />
+    </section>
+</MainGridLayout>

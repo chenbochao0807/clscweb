@@ -1,0 +1,97 @@
+---
+import { Icon } from "astro-icon/components";
+
+const cards = [
+    {
+        title: "社團介紹",
+        description: "了解 CLSC 的研究方向、社團文化與活動規劃。",
+        link: "/about/",
+        icon: "material-symbols:science",
+    },
+    {
+        title: "社員介紹",
+        description: "認識幹部與社員的專長、經歷與研究興趣。",
+        link: "/members/",
+        icon: "material-symbols:groups-rounded",
+    },
+    {
+        title: "社課教材",
+        description: "整理化學、生物、物理、競賽與簡報資源。",
+        link: "/resources/",
+        icon: "material-symbols:menu-book-rounded",
+    },
+    {
+        title: "加入我們",
+        description: "查看招生資訊、社群連結與入社方式。",
+        link: "/join/",
+        icon: "material-symbols:person-add-rounded",
+    },
+];
+---
+
+<section class="mb-6" aria-labelledby="feature-title">
+	<div class="mb-5">
+		<p class="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--primary)]">Explore</p>
+		<h2 id="feature-title" class="text-2xl font-bold text-[var(--text-normal)] md:text-3xl">網站導覽</h2>
+	</div>
+	<div class="grid">
+		{cards.map((card) => (
+			<a href={card.link} class="card" aria-label={card.title}>
+				<div class="icon" aria-hidden="true"><Icon name={card.icon} /></div>
+				<h3>{card.title}</h3>
+				<p>{card.description}</p>
+			</a>
+		))}
+	</div>
+</section>
+
+<style>
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:24px;
+    margin:30px 0;
+}
+
+.card{
+    background:var(--card-bg);
+    border:1px solid var(--line-divider);
+    border-radius:var(--radius-large);
+    padding:28px;
+    text-decoration:none;
+    transition:.25s;
+    min-height: 190px;
+    outline: none;
+}
+
+.card:hover,
+.card:focus-visible{
+    transform:translateY(-6px);
+    border-color: var(--primary);
+    box-shadow:0 18px 40px rgba(15,23,42,.12);
+}
+
+.icon{
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--primary) 14%, transparent);
+    color: var(--primary);
+    font-size:28px;
+    margin-bottom:18px;
+}
+
+.card h3{
+    color: var(--text-normal);
+    font-size:22px;
+    font-weight:700;
+    margin-bottom:12px;
+}
+
+.card p{
+    color:var(--text-muted);
+}
+</style>

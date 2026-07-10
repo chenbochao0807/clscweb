@@ -1,0 +1,17 @@
+---
+import { getCollection } from "astro:content";
+import AchievementTimeline from "../components/AchievementTimeline.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import MainGridLayout from "../layouts/MainGridLayout.astro";
+
+const achievements = (await getCollection("achievements")).sort(
+	(a, b) => a.data.order - b.data.order,
+);
+---
+
+<MainGridLayout title="活動" description="壢中科研活動">
+    <section class="card-base border border-[var(--line-divider)] p-6 md:p-8">
+        <SectionHeader title="活動" eyebrow="Activities" description="以 Markdown 管理年度、活動、狀態、照片與說明。" />
+        <AchievementTimeline achievements={achievements} />
+    </section>
+</MainGridLayout>

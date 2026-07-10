@@ -1,23 +1,59 @@
 ---
 import type { GetStaticPaths } from "astro";
+import Announcement from "../components/Announcement.astro";
+import CalendarEmbed from "../components/CalendarEmbed.astro";
 import Pagination from "../components/control/Pagination.astro";
+import FeatureCards from "../components/FeatureCards.astro";
+import Gallery from "../components/Gallery.astro";
+import HeroSection from "../components/HeroSection.astro";
 import PostPage from "../components/PostPage.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import SocialLinks from "../components/SocialLinks.astro";
+import Statistics from "../components/Statistics.astro";
+
 import { PAGE_SIZE } from "../constants/constants";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
 import { getSortedPosts } from "../utils/content-utils";
 
 export const getStaticPaths = (async ({ paginate }) => {
-	const allBlogPosts = await getSortedPosts();
-	return paginate(allBlogPosts, { pageSize: PAGE_SIZE });
+    const allBlogPosts = await getSortedPosts();
+    return paginate(allBlogPosts, {
+        pageSize: PAGE_SIZE,
+    });
 }) satisfies GetStaticPaths;
-// https://github.com/withastro/astro/issues/6507#issuecomment-1489916992
 
 const { page } = Astro.props;
-
 const len = page.data.length;
+const isFirstPage = page.currentPage === 1;
 ---
 
 <MainGridLayout>
-    <PostPage page={page}></PostPage>
-    <Pagination class="mx-auto onload-animation" page={page} style={`animation-delay: calc(var(--content-delay) + ${(len)*50}ms)`}></Pagination>
+    {isFirstPage && (
+        <>
+            <HeroSection />
+
+            <Announcement />
+
+            <Statistics />
+
+            <FeatureCards />
+
+            <CalendarEmbed />
+
+            <Gallery />
+
+            <SocialLinks />
+
+            <SectionHeader title="最新文章" eyebrow="Latest Posts" description="公告、社課紀錄、專題成果與活動文章。" />
+        </>
+    )}
+
+    <PostPage page={page} />
+
+    <Pagination
+        class="mx-auto onload-animation"
+        page={page}
+        style={`animation-delay: calc(var(--content-delay) + ${len * 50}ms)`}
+    />
+
 </MainGridLayout>

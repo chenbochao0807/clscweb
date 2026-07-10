@@ -1,0 +1,40 @@
+---
+import { Icon } from "astro-icon/components";
+import SectionHeader from "./SectionHeader.astro";
+
+const socials = [
+	{
+		name: "GitHub",
+		href: "https://github.com/chenbochao0807/clscweb",
+		icon: "fa6-brands:github",
+	},
+	{
+		name: "Instagram",
+		href: "https://www.instagram.com/_clsc16th_/",
+		icon: "fa6-brands:instagram",
+	},
+	{
+		name: "Facebook",
+		href: "https://www.facebook.com/CLSC.Is.Awesome/?locale=zh_TW",
+		icon: "fa6-brands:facebook",
+	},
+];
+---
+
+<section class="mb-6" aria-labelledby="social-title">
+	<SectionHeader title="找到我們" eyebrow="Social" />
+	<div class="grid gap-3 md:grid-cols-3">
+		{socials.map((social) => (
+			<a
+				href={social.href}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="card-base flex items-center gap-3 border border-[var(--line-divider)] p-5 text-[var(--text-normal)] transition hover:-translate-y-1 hover:border-[var(--primary)]"
+				aria-label={`前往 CLSC ${social.name}`}
+			>
+				<Icon name={social.icon} class="text-2xl text-[var(--primary)]" />
+				<span class="font-semibold">{social.name}</span>
+			</a>
+		))}
+	</div>
+</section>

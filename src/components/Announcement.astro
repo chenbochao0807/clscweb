@@ -1,0 +1,79 @@
+---
+const announcements = [
+	"17th:D，歡迎追蹤最新的消息最即時的資訊生活情報站",
+	"社員招生資訊將於我公布時公告",
+	"近期社課：0",
+	"0活動",
+	"追蹤IG：@_clsc16th_",
+];
+---
+
+<section class="announcement" aria-label="最新公告">
+	<div class="marquee">
+		{announcements.concat(announcements).map((item) => (
+			<span>{item}</span>
+		))}
+	</div>
+</section>
+
+<style>
+.announcement {
+	width: 100%;
+	overflow: hidden;
+	background: var(--card-bg);
+	color: var(--text-normal);
+	border: 1px solid var(--line-divider);
+	border-radius: var(--radius-large);
+	margin-bottom: 1.5rem;
+	box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08);
+}
+
+.marquee {
+	display: flex;
+	align-items: center;
+	white-space: nowrap;
+	padding: 14px 0;
+	animation: marquee 28s linear infinite;
+	color: var(--text-normal);
+	will-change: transform;
+}
+
+.announcement:hover .marquee,
+.announcement:focus-within .marquee {
+	animation-play-state: paused;
+}
+
+.marquee span {
+	position: relative;
+	margin-right: 80px;
+	color: var(--text-normal);
+	font-size: 15px;
+	font-weight: 600;
+}
+
+.marquee span::before {
+	content: "";
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	margin-right: 12px;
+	border-radius: 999px;
+	background: var(--primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.marquee {
+		animation: none;
+		overflow-x: auto;
+	}
+}
+
+@keyframes marquee {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-50%);
+	}
+}
+</style>

@@ -1,0 +1,61 @@
+---
+import fs from "node:fs/promises";
+import path from "node:path";
+import SectionHeader from "./SectionHeader.astro";
+
+interface GalleryImage {
+	src: string;
+	alt: string;
+}
+
+interface Props {
+	images?: GalleryImage[];
+	title?: string;
+	description?: string;
+}
+
+const {
+	images,
+	title = "活動相簿",
+	description = "收錄社課、實驗、交流與競賽活動片段。",
+} = Astro.props;
+
+async function getPublicImages(): Promise<GalleryImage[]> {
+	if (images) return images;
+
+	const imageDir = path.join(process.cwd(), "public", "images");
+	try {
+		const files = await fs.readdir(imageDir);
+		return files
+			.filter((file) => /\.(jpe?g|png|webp|gif)$/i.test(file))
+			.sort()
+			.map((file) => ({
+				src: `/images/${file}`,
+				alt: `CLSC gallery image ${file}`,
+			}));
+	} catch {
+		return [];
+	}
+}
+
+const galleryImages = await getPublicImages();
+---
+
+{galleryImages.length > 0 && (
+	<section class="mb-6" aria-labelledby="gallery-title">
+		<SectionHeader title={title} eyebrow="Gallery" description={description} />
+		<div class="grid grid-cols-2 gap-3 md:grid-cols-3">
+			{galleryImages.map((image) => (
+				<a href={image.src} class="custom-md block overflow-hidden rounded-[var(--radius-large)] border border-[var(--line-divider)]">
+					<img
+						src={image.src}
+						alt={image.alt}
+						class="aspect-[4/3] w-full object-cover transition duration-300 hover:scale-105"
+						loading="lazy"
+						decoding="async"
+					/>
+				</a>
+			))}
+		</div>
+	</section>
+)}

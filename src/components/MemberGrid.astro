@@ -1,0 +1,67 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import { Icon } from "astro-icon/components";
+import Markdown from "./misc/Markdown.astro";
+
+interface Props {
+	members: CollectionEntry<"members">[];
+}
+
+const { members } = Astro.props;
+const renderedMembers = await Promise.all(
+	members.map(async (member) => ({
+		member,
+		Content: (await render(member)).Content,
+	})),
+);
+
+const socialLinks = (member: CollectionEntry<"members">) =>
+	[
+		{ name: "GitHub", href: member.data.github, icon: "fa6-brands:github" },
+		{ name: "Instagram", href: member.data.instagram, icon: "fa6-brands:instagram" },
+		{ name: "Threads", href: member.data.threads, icon: "fa6-brands:threads" },
+	].filter((link) => link.href);
+---
+
+<div class="grid gap-4 md:grid-cols-2">
+	{renderedMembers.map(({ member, Content }) => (
+		<article class="card-base border border-[var(--line-divider)] p-6">
+			<div class="flex gap-5">
+				{member.data.photo && (
+					<img
+						src={member.data.photo}
+						alt={`${member.data.name} profile photo`}
+						class="h-24 w-24 shrink-0 rounded-2xl object-cover"
+						loading="lazy"
+						decoding="async"
+					/>
+				)}
+				<div class="min-w-0">
+					<h2 class="text-xl font-bold text-[var(--text-normal)]">{member.data.name}</h2>
+					<p class="mt-1 font-medium text-[var(--primary)]">{member.data.position}</p>
+					{member.data.bio && <p class="mt-3 text-sm leading-6 text-[var(--text-muted)]">{member.data.bio}</p>}
+				</div>
+			</div>
+			<Markdown class="mt-5 text-sm">
+				<Content />
+			</Markdown>
+			{socialLinks(member).length > 0 && (
+				<div class="mt-5 flex flex-wrap gap-2">
+					{socialLinks(member).map((link) => (
+						<a
+							href={link.href}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="btn-regular h-10 rounded-xl px-3 text-sm font-semibold"
+							aria-label={`${member.data.name} ${link.name}`}
+						>
+							<Icon name={link.icon} class="mr-2 text-lg" />
+							{link.name}
+						</a>
+					))}
+				</div>
+			)}
+		</article>
+	))}
+</div>

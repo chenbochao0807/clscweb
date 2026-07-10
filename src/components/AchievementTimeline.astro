@@ -1,0 +1,43 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import Markdown from "./misc/Markdown.astro";
+
+interface Props {
+	achievements: CollectionEntry<"achievements">[];
+}
+
+const { achievements } = Astro.props;
+const renderedAchievements = await Promise.all(
+	achievements.map(async (achievement) => ({
+		achievement,
+		Content: (await render(achievement)).Content,
+	})),
+);
+---
+
+<div class="space-y-4">
+	{renderedAchievements.map(({ achievement, Content }) => (
+		<article class="card-base border border-[var(--line-divider)] p-6">
+			<div class="grid gap-5 md:grid-cols-[1fr_14rem]">
+				<div>
+					<p class="text-sm font-semibold text-[var(--primary)]">{achievement.data.year}</p>
+					<h2 class="mt-1 text-2xl font-bold text-[var(--text-normal)]">{achievement.data.competition}</h2>
+					<p class="mt-2 font-semibold text-[var(--text-muted)]">{achievement.data.award}</p>
+					<Markdown class="mt-4">
+						<Content />
+					</Markdown>
+				</div>
+				{achievement.data.photo && (
+					<img
+						src={achievement.data.photo}
+						alt={`${achievement.data.competition} ${achievement.data.award}`}
+						class="aspect-[4/3] w-full rounded-2xl object-cover"
+						loading="lazy"
+						decoding="async"
+					/>
+				)}
+			</div>
+		</article>
+	))}
+</div>
