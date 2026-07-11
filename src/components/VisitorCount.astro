@@ -1,0 +1,19 @@
+---
+
+const websiteId = "";   
+---
+
+<div class="visitor-count text-center my-6 text-sm text-gray-500 dark:text-gray-400">
+  網站總訪問人數： <span id="umami-visits" class="font-mono font-medium text-black dark:text-white">---</span>
+</div>
+
+<script>
+  async function fetchUmamiStats() {
+    const resp = await fetch();
+    const data = await resp.json();
+    const visits = data.pageviews.value.toLocaleString('zh-TW');
+    document.getElementById('umami-visits').textContent = visits;
+  }
+
+  fetchUmamiStats();
+</script>

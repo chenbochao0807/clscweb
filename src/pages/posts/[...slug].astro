@@ -14,6 +14,7 @@ import PostMetadata from "../../components/PostMeta.astro";
 import { profileConfig, siteConfig } from "../../config";
 import { formatDateToYYYYMMDD } from "../../utils/date-utils";
 import ShareButtons from '../../components/ShareButtons.astro';
+import Giscus from "../../components/Giscus.astro";
 
 export async function getStaticPaths() {
 	const blogEntries = await getSortedPosts();
@@ -137,5 +138,7 @@ const jsonLd = {
   title={entry.data.title}
   url={`https://clhs.dpdns.org${Astro.url.pathname}`}
 />
-
+<div class="mt-10">
+    <Giscus />
+</div>
 </MainGridLayout>

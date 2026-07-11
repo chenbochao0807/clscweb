@@ -2,6 +2,7 @@
 import type { CollectionEntry } from "astro:content";
 import { getPostUrlBySlug } from "@utils/url-utils";
 import PostCard from "./PostCard.astro";
+import Giscus from "../../components/Giscus.astro";
 
 const { page } = Astro.props;
 
@@ -25,4 +26,5 @@ const interval = 50;
                 style={`animation-delay: calc(var(--content-delay) + ${delay++ * interval}ms);`}
         ></PostCard>
     ))}
+    
 </div>
