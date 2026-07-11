@@ -2,21 +2,20 @@
 import SectionHeader from "./SectionHeader.astro";
 
 const stats = [
-	{ value: "17th", label: "Current Officers" },
-	{ value: "40+", label: "Members" },
-	{ value: "15+", label: "Activities" },
-	{ value: "1+", label: "Projects" },
-	{ value: "1", label: "Jaker" },
+	{ value: "第 17 屆", label: "現任幹部" },
+	{ value: "40+", label: "社員人數" },
+	{ value: "15+", label: "活動紀錄" },
+	{ value: "1+", label: "專題計畫" },
 ];
 ---
 
 <section class="mb-6" aria-labelledby="statistics-title">
-	<SectionHeader title="CLSC in Numbers" eyebrow="Statistics" />
-	<div class="grid grid-cols-2 gap-3 md:grid-cols-4">
+	<SectionHeader title="社團概況" />
+	<div class="grid grid-cols-2 gap-4 md:grid-cols-4">
 		{stats.map((stat) => (
-			<div class="card-base border border-[var(--line-divider)] p-5">
+			<div class="card-base border border-[var(--line-divider)] p-6 text-center">
 				<div class="text-3xl font-bold text-[var(--primary)]">{stat.value}</div>
-				<div class="mt-1 text-sm font-medium text-[var(--text-muted)]">{stat.label}</div>
+				<div class="mt-2 text-sm font-medium text-[var(--text-muted)]">{stat.label}</div>
 			</div>
 		))}
 	</div>

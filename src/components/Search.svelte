@@ -2,7 +2,6 @@
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import Icon from "@iconify/svelte";
-import { url } from "@utils/url-utils.ts";
 import { onMount } from "svelte";
 import type { SearchResult } from "@/global";
 
@@ -10,26 +9,9 @@ let keywordDesktop = "";
 let keywordMobile = "";
 let result: SearchResult[] = [];
 let isSearching = false;
+let hasSearched = false;
 let pagefindLoaded = false;
 let initialized = false;
-
-const fakeResult: SearchResult[] = [
-	{
-		url: url("/"),
-		meta: {
-			title: "This Is a Fake Search Result",
-		},
-		excerpt:
-			"Because the search cannot work in the <mark>dev</mark> environment.",
-	},
-	{
-		url: url("/"),
-		meta: {
-			title: "If You Want to Test the Search",
-		},
-		excerpt: "Try running <mark>npm build && npm preview</mark> instead.",
-	},
-];
 
 const togglePanel = () => {
 	const panel = document.getElementById("search-panel");
@@ -51,6 +33,7 @@ const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
 	if (!keyword) {
 		setPanelVisibility(false, isDesktop);
 		result = [];
+		hasSearched = false;
 		return;
 	}
 
@@ -59,24 +42,22 @@ const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
 	}
 
 	isSearching = true;
+	hasSearched = true;
 
 	try {
 		let searchResults: SearchResult[] = [];
 
-		if (import.meta.env.PROD && pagefindLoaded && window.pagefind) {
+		if (pagefindLoaded && window.pagefind) {
 			const response = await window.pagefind.search(keyword);
 			searchResults = await Promise.all(
 				response.results.map((item) => item.data()),
 			);
-		} else if (import.meta.env.DEV) {
-			searchResults = fakeResult;
 		} else {
 			searchResults = [];
-			console.error("Pagefind is not available in production environment.");
 		}
 
 		result = searchResults;
-		setPanelVisibility(result.length > 0, isDesktop);
+		setPanelVisibility(true, isDesktop);
 	} catch (error) {
 		console.error("Search error:", error);
 		result = [];
@@ -99,9 +80,6 @@ onMount(() => {
 	};
 
 	if (import.meta.env.DEV) {
-		console.log(
-			"Pagefind is not available in development mode. Using mock data.",
-		);
 		initializeSearch();
 	} else {
 		document.addEventListener("pagefindready", () => {
@@ -112,7 +90,7 @@ onMount(() => {
 			console.warn(
 				"Pagefind load error event received. Search functionality will be limited.",
 			);
-			initializeSearch(); // Initialize with pagefindLoaded as false
+				initializeSearch();
 		});
 
 		// Fallback in case events are not caught or pagefind is already loaded by the time this script runs
@@ -121,7 +99,7 @@ onMount(() => {
 				console.log("Fallback: Initializing search after timeout.");
 				initializeSearch();
 			}
-		}, 2000); // Adjust timeout as needed
+		}, 2000);
 	}
 });
 
@@ -166,13 +144,18 @@ top-20 left-4 md:left-[unset] right-4 shadow-2xl rounded-2xl p-2">
       dark:bg-white/5 dark:hover:bg-white/10 dark:focus-within:bg-white/10
   ">
         <Icon icon="material-symbols:search" class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"></Icon>
-        <input placeholder="Search" bind:value={keywordMobile}
+        <input placeholder="{i18n(I18nKey.search)}" bind:value={keywordMobile}
                class="pl-10 absolute inset-0 text-sm bg-transparent outline-0
                focus:w-60 text-black/50 dark:text-white/50"
         >
     </div>
 
     <!-- search results -->
+	{#if isSearching}
+		<p class="px-3 py-3 text-sm text-50">搜尋中...</p>
+	{:else if hasSearched && result.length === 0}
+		<p class="px-3 py-3 text-sm text-50">找不到符合的結果。</p>
+	{/if}
     {#each result as item}
         <a href={item.url}
            class="transition first-of-type:mt-2 lg:first-of-type:mt-0 group block

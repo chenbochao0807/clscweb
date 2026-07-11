@@ -8,15 +8,15 @@ import type {
 
 export const siteConfig: SiteConfig = {
 	title: "壢中科研 CLSC",
-	subtitle: "國立中央大學附屬中壢高級中學科研社",
+	subtitle: "中大壢中科研社",
 	lang: "zh_TW",
 	themeColor: {
-		hue: 230,
-		fixed: false,
+		hue: 155,
+		fixed: true,
 	},
 	banner: {
 		enable: true,
-		src: "/banner.jpg", // 放在 public/banner.jpg
+		src: "/banner.jpg", 
 		position: "center",
 		credit: {
 			enable: false,
@@ -54,7 +54,7 @@ export const navBarConfig: NavBarConfig = {
 			url: "/achievements/",
 		},
 		{
-			name: "友社",
+			name: "合作",
 			url: "/friends/",
 		},
 		{

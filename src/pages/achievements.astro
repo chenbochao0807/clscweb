@@ -11,7 +11,7 @@ const achievements = (await getCollection("achievements")).sort(
 
 <MainGridLayout title="活動" description="壢中科研活動">
     <section class="card-base border border-[var(--line-divider)] p-6 md:p-8">
-        <SectionHeader title="活動" eyebrow="Activities" description="以 Markdown 管理年度、活動、狀態、照片與說明。" />
+        <SectionHeader title="活動紀錄" description="整理社團活動、競賽成果與專題紀錄。" />
         <AchievementTimeline achievements={achievements} />
     </section>
 </MainGridLayout>
