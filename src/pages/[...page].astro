@@ -55,5 +55,8 @@ const isFirstPage = page.currentPage === 1;
         page={page}
         style={`animation-delay: calc(var(--content-delay) + ${len * 50}ms)`}
     />
-
+<ShareButtons
+  title={entry.data.title}
+  url={`https://clhs.dpdns.org${Astro.url.pathname}`}
+/>
 </MainGridLayout>
