@@ -1,4 +1,4 @@
-# 壢中科研（CLSC）官方網站
+# 壢中科研CLSC website
 
 ![Astro](https://img.shields.io/badge/Astro-5.x-FF5D01?logo=astro)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript)
@@ -6,7 +6,7 @@
 ![Firebase](https://img.shields.io/badge/Firebase-Authentication-FFCA28?logo=firebase)
 ![Cloudflare Pages](https://img.shields.io/badge/Cloudflare-Pages-F38020?logo=cloudflare)
 
-壢中科研（Computer & Learning Science Club, CLSC）官方網站，基於 **Fuwari** 主題建置，採用 **Astro、TypeScript** 與 **Tailwind CSS** 開發，提供社團公告、教材、社員介紹、活動成果及學術資源等內容。
+壢中科研（Chung Li Science Club, CLSC）官網，基於 **Fuwari** 主題建置，採用 **Astro、TypeScript** 與 **Tailwind CSS** 開發，提供社團公告、教材、社員介紹、活動成果及學術資源等內容。
 
 ---
 
