@@ -18,6 +18,47 @@ const links = [
 ---
 
 <MainGridLayout title="加入我們" description="加入壢中科研 CLSC">
+  <hr class="my-8 border-[var(--line-divider)]" />
+
+<div>
+  <h2 class="text-2xl font-bold mb-6 text-[var(--primary)]">
+    GitHub 專案
+  </h2>
+
+  <p class="text-[var(--text-muted)] mb-6">
+    CLSC 官方網站採用開源方式開發，所有原始碼皆公開於 GitHub，歡迎參與開發、提出建議或回報問題。
+  </p>
+
+  <div class="grid gap-4 lg:grid-cols-2">
+
+    <img
+      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdA_HfB5ORvtzRRhYFTq9JD92wMhnz8z2PgF8eEgEiGA&s=10"
+      alt="CLSC GitHub Repository"
+      loading="lazy"
+      class="w-full rounded-xl"
+    />
+
+    <img
+      src=""
+      alt="GitHub Stats"
+      loading="lazy"
+      class="w-full rounded-xl"
+    />
+
+  </div>
+
+  <div class="mt-6">
+    <a
+      href="https://github.com/chenbochao0807/clscweb"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn-regular h-11 rounded-xl px-5 font-semibold inline-flex items-center"
+    >
+      <Icon name="fa6-brands:github" class="mr-2 text-xl" />
+      查看 GitHub Repository
+    </a>
+  </div>
+</div>
   <section class="card-base border border-[var(--line-divider)] p-6 md:p-8">
     <SectionHeader title="加入我們" eyebrow="Join CLSC" description="如果你對科學研究、實驗與探索充滿熱情，歡迎加入壢中科研。" />
     <div class="grid gap-4 md:grid-cols-2">
@@ -38,5 +79,6 @@ const links = [
         </a>
       ))}
     </div>
+    
   </section>
 </MainGridLayout>
