@@ -38,28 +38,32 @@ export const siteConfig: SiteConfig = {
 export const navBarConfig: NavBarConfig = {
 	links: [
 		{
-			name: "首頁",
-			url: "/",
-		},
-		{
-			name: "社員介紹",
-			url: "/members/",
-		},
-		{
-			name: "社課教材",
-			url: "/resources/",
-		},
-		{
-			name: "活動",
-			url: "/achievements/",
-		},
-		{
-			name: "合作",
-			url: "/friends/",
-		},
-		{
-			name: "加入我們",
-			url: "/join/",
+      name: "首頁",
+      url: "/",
+    },
+    {
+      name: "關於",
+      url: "/about/",
+    },
+    {
+      name: "Archive",
+      url: "/archive/",
+    },
+    {
+      name: "社員",
+      url: "/members/",
+    },
+    {
+      name: "教材",
+      url: "/resources/",
+    },
+    {
+      name: "加入我們",
+      url: "/join/",
+    },
+    {
+      name: "合作夥伴",
+      url: "/members/",
 		},
 	],
 };
