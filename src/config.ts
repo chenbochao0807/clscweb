@@ -63,7 +63,7 @@ export const navBarConfig: NavBarConfig = {
     },
     {
       name: "合作夥伴",
-      url: "/members/",
+      url: "/friends/",
 		},
 	],
 };
