@@ -237,83 +237,84 @@ https://github.com/chenbochao0807/clscweb
 
 ---
 
-# Features
+## Features
 
-## Content
+### Website
 
-- Markdown Blog
-- 社團公告
-- About
-- 社員介紹
-- 幹部介紹
-- 社課教材
-- 活動資訊
-- 成果展示
-- FAQ
-
-## Community
-
-- Firebase 留言系統
-- Google Login
-- Email Login
-- 社群分享
-- GitHub Repository Embed
-
-## Search
-
-- Pagefind 全文搜尋
-
-## SEO
-
-- Sitemap
+- Responsive Design
+- Dark Mode
+- Mobile First
+- Fast Loading
+- SEO Optimization
 - RSS Feed
+- Sitemap
 - Open Graph
-- Twitter Card
 - JSON-LD
 - Canonical URL
 
-## Analytics
+### Content
+
+- Markdown Blog
+- Announcements
+- About
+- Members
+- Officers
+- Resources
+- Projects
+- Achievements
+- Club Introduction
+- FAQ
+
+### Community
+
+- Firebase Comment System
+- Google Login
+- Email Login
+- Share Buttons
+- Instagram Embed
+- GitHub Repository Cards
+
+### Search
+
+- Full-text Search
+- Tag Search
+- Category Filter
+
+### Analytics
 
 - Google Analytics 4
 - GitHub Statistics
 
-## UI
-
-- Dark Mode
-- Responsive Design
-- Loading Animation
-- Skeleton
-- Pagination
-- Share Buttons
-
----
-
-# Tech Stack
-
-## Frontend
-
-- Astro 5
-- TypeScript
-- Tailwind CSS
-- Fuwari Theme
-
-## Backend
+### Security
 
 - Firebase Authentication
-- Firestore
-- Firebase Storage
+- Firestore Security Rules
+- XSS Protection
+- Input Validation
+- HTTPS
 
-## Deploy
+## Highlights
 
+- Astro 5 + TypeScript
+- Fuwari Theme
+- Tailwind CSS
+- Firebase Authentication
+- Firestore Database
+- Google Analytics 4
 - Cloudflare Pages
 - Cloudflare CDN
-
-## Development
-
-- pnpm
-- ESLint
-- Prettier
-
+- Responsive Design
+- Dark Mode
+- SEO Optimized
+- Markdown CMS
+- GitHub Repository Embed
+- Instagram Embed
+- Share Buttons
+- Search (Pagefind)
+- RSS Feed
+- Sitemap
+- JSON-LD
+- Open Graph
 ---
 
 # Architecture
@@ -458,11 +459,9 @@ Node
 - [x] Resources
 - [x] Search
 - [x] Share
-- [x] Firebase Comment
 - [x] Google Analytics
 
 ## Version 2
-
 - [ ] Admin Dashboard
 - [ ] Event Registration
 - [ ] Firebase Storage
@@ -471,7 +470,7 @@ Node
 - [ ] Member Center
 
 ## Version 3
-
+- [ ] Firebase Comment
 - [ ] PWA
 - [ ] Offline
 - [ ] Notification
