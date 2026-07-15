@@ -101,7 +101,15 @@ const bannerOffset = bannerOffsetByPosition[siteConfig.banner.position || "cente
   <slot name="head"></slot>
   <link rel="alternate" type="application/rss+xml" title={profileConfig.name} href={`${Astro.site}rss.xml`}/>
 </head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4SYCYFL69R"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
 
+gtag('config', 'G-4SYCYFL69R');
+</script>
 <body class="min-h-screen transition" class:list={[{"lg:is-home": isHomePage, "enable-banner": enableBanner}]} data-overlayscrollbars-initialize>
   <ConfigCarrier></ConfigCarrier>
   <slot />
@@ -111,6 +119,7 @@ const bannerOffset = bannerOffsetByPosition[siteConfig.banner.position || "cente
   <div class="fixed bottom-6 right-6 z-50 pointer-events-none">
     
   </div>
+  PWA
 <div class="fixed bottom-40 right-6 flex flex-col gap-4 z-50">
 
   <!-- Instagram -->
