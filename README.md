@@ -200,8 +200,6 @@ pls use Github to login
 
 本網站提供社團公告、社員介紹、教材資源、活動紀錄及其他相關資訊及功能，作為社團對內交流與對外展示的平台，若對此有興趣的壢中學弟妹歡迎加入科研大家庭來幫助維護此專案。
 
-# 壢中科研（CLSC）官方網站
-
 <p align="center">
 
 Modern official website for CLSC, built with Astro, TypeScript, Tailwind CSS, Firebase and Cloudflare.
