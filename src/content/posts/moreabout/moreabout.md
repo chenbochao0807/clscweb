@@ -2,7 +2,7 @@
 title: "More about CLSC"
 published: 2026-07-11
 description: "Know more about us。"
-image: .\CLSCsymbolon.png
+image: "CLSCsymbolon.png"
 tags:
   - CLSC
   - about
