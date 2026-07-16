@@ -2,6 +2,7 @@
 title: "More about CLSC"
 published: 2026-07-11
 description: "Know more about us。"
+image: \壢中科研-CLSC_symbolon.png
 tags:
   - CLSC
   - about

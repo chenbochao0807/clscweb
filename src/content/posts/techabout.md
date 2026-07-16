@@ -7,7 +7,7 @@ tags:
   - Astro
   - CLSC
   - Cloudfare
-category: 網站
+category: 技術
 draft: false
 ---
 # 先情提要
