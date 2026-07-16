@@ -1,6 +1,6 @@
 ---
-year: "11X"
-competition: 實驗
+year: "Forever"
+competition: 科學實驗
 award: 進行中
 photo: ""
 order: 1
