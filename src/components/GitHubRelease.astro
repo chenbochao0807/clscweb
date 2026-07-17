@@ -1,0 +1,123 @@
+---
+const api =
+  "https://api.github.com/repos/chenbochao0807/clscweb/releases/latest";
+
+let release = null;
+
+try {
+  const res = await fetch(api, {
+    headers: {
+      Accept: "application/vnd.github+json",
+    },
+  });
+
+  if (res.ok) {
+    release = await res.json();
+  }
+} catch {}
+---
+
+{
+release && (
+<section class="card-base p-6 mt-8">
+
+<h2 class="text-2xl font-bold mb-6">
+最新版本
+</h2>
+
+<div class="grid gap-4">
+
+<div>
+
+<div class="text-sm opacity-70">
+版本
+</div>
+
+<div class="text-xl font-bold">
+{release.name || release.tag_name}
+</div>
+
+</div>
+
+<div>
+
+<div class="text-sm opacity-70">
+發布日期
+</div>
+
+<div>
+{new Date(release.published_at).toLocaleDateString("zh-TW")}
+</div>
+
+</div>
+
+<div>
+
+<div class="text-sm opacity-70">
+下載
+</div>
+
+<a
+href={release.html_url}
+target="_blank"
+class="btn-regular mt-2"
+>
+GitHub Release
+</a>
+
+</div>
+
+</div>
+
+</section>
+)
+}
+{
+release.assets.length > 0 && (
+
+<div class="mt-8">
+
+<h3 class="font-bold mb-3">
+下載檔案
+</h3>
+
+<div class="space-y-3">
+
+{release.assets.map(asset => (
+
+<a
+href={asset.browser_download_url}
+target="_blank"
+class="btn-card flex justify-between p-4 rounded-xl"
+>
+
+<div>
+
+<div class="font-semibold">
+{asset.name}
+</div>
+
+<div class="text-sm opacity-70">
+
+{(asset.size/1024/1024).toFixed(2)} MB
+
+</div>
+
+</div>
+
+<div>
+
+⬇ {asset.download_count}
+
+</div>
+
+</a>
+
+))}
+
+</div>
+
+</div>
+
+)
+}

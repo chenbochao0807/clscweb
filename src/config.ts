@@ -65,6 +65,10 @@ export const navBarConfig: NavBarConfig = {
       name: "合作夥伴",
       url: "/friends/",
 		},
+	{
+      name: "下載",
+      url: "/downloads/",
+	},
 	],
 };
 

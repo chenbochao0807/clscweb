@@ -13,11 +13,17 @@ draft: false
 ---
 
 # 七月開發更新
+[![GitHub last commit](https://img.shields.io/github/last-commit/chenbochao0807/clscweb)](https://github.com/chenbochao0807/clscweb/commits)
 
 > 持續改善使用體驗，打造更快速、更穩定、更完善的網站。
 
 這段時間主要專注於 **修正已知的問題**、**改善網站穩定性**，並新增一些實用功能，讓整體操作更加流暢。
+:::important
+APP版開放下載
+:::
 
+iOS [點我下載](https://github.com/chenbochao0807/clscweb/releases/download/iOS/clsc.ipa)
+Android [點我下載](https://github.com/chenbochao0807/clscweb/releases/download/iOS/clsc.apk)
 ---
 
 ![Development Banner](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEUzNp5UCZlJnzSWgqOke0TmXx6YCNzqjJDr-3yHODKBJxTVCQ89rAA-vg&s=10)
@@ -46,11 +52,13 @@ draft: false
 
 本次加入多項新功能：
 
+- 增加下載中心
 - Banner跑馬燈圖片、社團主要圖片、網站超連結檢視預覽圖片與簡介更新
 - 整體配色改成科研CLSC主題配色
 - 加入 ShareBottom 可分享網站文章到社群平台
 - 加入留言系統，可使用Github登入
 - 新增與完善友好社團連結和欄位
+- APP版開放下載
 - 新增Float浮動圖標跳轉
 - 新增社員(總務)卡片以及社群連結
 - 新增 [壽山高中資訊研究社](https://www.instagram.com/sscs_1st/) 社群頭像和Instagram 連結
@@ -110,6 +118,28 @@ draft: false
 我的8頁提交
 ![GitHub Actions](https://github.com/chenbochao0807/Photo/blob/main/%E8%9E%A2%E5%B9%95%E6%93%B7%E5%8F%96%E7%95%AB%E9%9D%A2%202026-07-17%20102634.png?raw=true)
 
+
+[提交紀錄](https://github.com/chenbochao0807/clscweb/commits)
+<div id="github-commits">載入中...</div>
+
+<script>
+  const repo = "chenbochao0807/clscweb";
+  fetch(`https://api.github.com/repos/${repo}/commits?per_page=5`)
+    .then(res => res.json())
+    .then(data => {
+      let html = "<ul>";
+      data.forEach(item => {
+        const msg = item.commit.message.split('\n')[0];
+        const date = new Date(item.commit.author.date).toLocaleDateString();
+        html += `<li><strong>${date}</strong> - <a href="${item.html_url}" target="_blank">${msg}</a></li>`;
+      });
+      html += "</ul>";
+      document.getElementById("github-commits").innerHTML = html;
+    })
+    .catch(err => {
+      document.getElementById("github-commits").innerText = "無法載入 Commit 紀錄";
+    });
+</script>
 ---
 
 # 更新前 vs 更新後
