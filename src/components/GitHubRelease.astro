@@ -12,9 +12,15 @@ try {
   });
 
   if (res.ok) {
-    release = await res.json();
+    const data = await res.json();
+
+    if (data && Array.isArray(data.assets)) {
+      release = data;
+    }
   }
-} catch {}
+} catch (e) {
+  console.warn("GitHub release fetch failed", e);
+}
 ---
 
 {
@@ -28,7 +34,6 @@ release && (
 <div class="grid gap-4">
 
 <div>
-
 <div class="text-sm opacity-70">
 版本
 </div>
@@ -36,11 +41,9 @@ release && (
 <div class="text-xl font-bold">
 {release.name || release.tag_name}
 </div>
-
 </div>
 
 <div>
-
 <div class="text-sm opacity-70">
 發布日期
 </div>
@@ -48,11 +51,9 @@ release && (
 <div>
 {new Date(release.published_at).toLocaleDateString("zh-TW")}
 </div>
-
 </div>
 
 <div>
-
 <div class="text-sm opacity-70">
 下載
 </div>
@@ -72,8 +73,10 @@ GitHub Release
 </section>
 )
 }
+
+
 {
-release.assets.length > 0 && (
+release?.assets?.length > 0 && (
 
 <div class="mt-8">
 
@@ -98,17 +101,13 @@ class="btn-card flex justify-between p-4 rounded-xl"
 </div>
 
 <div class="text-sm opacity-70">
-
-{(asset.size/1024/1024).toFixed(2)} MB
-
+{(asset.size / 1024 / 1024).toFixed(2)} MB
 </div>
 
 </div>
 
 <div>
-
 ⬇ {asset.download_count}
-
 </div>
 
 </a>
