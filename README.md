@@ -5,6 +5,7 @@
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.x-38BDF8?logo=tailwindcss)
 ![Firebase](https://img.shields.io/badge/Firebase-Authentication-FFCA28?logo=firebase)
 ![Cloudflare Pages](https://img.shields.io/badge/Cloudflare-Pages-F38020?logo=cloudflare)
+[![GitHub last commit](https://img.shields.io/github/last-commit/chenbochao0807/clscweb)](https://github.com/chenbochao0807/clscweb/commits)
 
 壢中科研（Chung Li Science Club, CLSC）官網，基於 **Fuwari** 主題建置，採用 **Astro、TypeScript** 與 **Tailwind CSS** 開發，提供社團公告、教材、社員介紹、活動成果及學術資源等內容。
 
