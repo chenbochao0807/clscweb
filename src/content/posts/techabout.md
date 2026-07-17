@@ -10,9 +10,10 @@ tags:
 category: 技術
 draft: false
 ---
-# 先情提要
-
+:::important
 本站沒有bug，所有超出預期並非錯誤而可能是使用者環境所致或開發者失誤，皆屬於 [特性](https://zh.minecraft.wiki/w/%E7%89%B9%E6%80%A7?variant=zh-tw) 。
+:::
+
 
 # 網站技術與功能介紹
 
