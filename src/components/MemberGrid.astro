@@ -58,7 +58,7 @@ const socialLinks = (member: CollectionEntry<"members">) =>
 							class="btn-regular h-10 rounded-xl px-3 text-sm font-semibold"
 							aria-label={`${member.data.name} ${link.name}`}
 						>
-							<Icon name={link.icon} class="mr-2 text-lg" />
+							<Icon name={link.icon} class="mr-2 h-5 w-5 shrink-0" aria-hidden="true" />
 							{link.name}
 						</a>
 					))}

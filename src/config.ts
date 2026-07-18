@@ -85,7 +85,7 @@ export const profileConfig: ProfileConfig = {
 		{
 			name: "Instagram",
 			icon: "fa6-brands:instagram",
-			url: "https://www.instagram.com/_clsc16th_/",
+			url: "https://www.instagram.com/clsc_17th/",
 		},
 		{
 			name: "Discord",

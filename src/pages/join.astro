@@ -1,6 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
 import SectionHeader from "../components/SectionHeader.astro";
+import GitHubStats from "../components/GitHubStats.astro";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
 
 const links = [
@@ -30,7 +31,6 @@ const links = [
   </p>
 
   <div class="grid gap-4 lg:grid-cols-2">
-
     <img
       src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdA_HfB5ORvtzRRhYFTq9JD92wMhnz8z2PgF8eEgEiGA&s=10"
       alt="CLSC GitHub Repository"
@@ -38,13 +38,7 @@ const links = [
       class="w-full rounded-xl"
     />
 
-    <img
-      src=""
-      alt="GitHub Stats"
-      loading="lazy"
-      class="w-full rounded-xl"
-    />
-
+    <GitHubStats />
   </div>
 
   <div class="mt-6">

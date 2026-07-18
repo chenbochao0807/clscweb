@@ -4,12 +4,12 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import ConfigCarrier from "@components/ConfigCarrier.astro";
 import { profileConfig, siteConfig } from "@/config";
+import { Icon } from "astro-icon/components";
 import { AUTO_MODE, BANNER_HEIGHT, BANNER_HEIGHT_EXTEND, BANNER_HEIGHT_HOME, DARK_MODE, DEFAULT_THEME, LIGHT_MODE, PAGE_WIDTH } from "../constants/constants";
 import { defaultFavicons } from "../constants/icon";
 import type { Favicon } from "../types/config";
 import { pathsEqual, url } from "../utils/url-utils";
 import "katex/dist/katex.css";
-import GitHubStats from "../components/GitHubStats.astro";
 
 interface Props {
   title?: string;
@@ -102,8 +102,8 @@ const bannerOffset = bannerOffsetByPosition[siteConfig.banner.position || "cente
   <link rel="alternate" type="application/rss+xml" title={profileConfig.name} href={`${Astro.site}rss.xml`}/>
 </head>
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-4SYCYFL69R"></script>
-<script>
+<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-4SYCYFL69R"></script>
+<script is:inline>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
@@ -116,56 +116,25 @@ gtag('config', 'G-4SYCYFL69R');
 
   <div id="page-height-extend" class="hidden h-[300vh]"></div>
 
-  <div class="fixed bottom-6 right-6 z-50 pointer-events-none">
-    
+  <div class="fixed bottom-40 right-6 z-50 flex flex-col gap-4">
+    <a
+      href="https://www.instagram.com/clsc_17th/"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Instagram"
+      class="transition hover:scale-110"
+    >
+      <Icon name="fa6-brands:instagram" class="h-8 w-8 shrink-0 text-[var(--primary)]" aria-hidden="true" />
+    </a>
+
+    <a
+      href="/resources/"
+      aria-label="教材"
+      class="transition hover:scale-110"
+    >
+      <Icon name="fa6-solid:book" class="h-8 w-8 shrink-0 text-[var(--primary)]" aria-hidden="true" />
+    </a>
   </div>
-  PWA
-<div class="fixed bottom-40 right-6 flex flex-col gap-4 z-50">
-
-  <!-- Instagram -->
-  <a
-    href="https://www.instagram.com/_clsc16th_/"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Instagram"
-    class="transition hover:scale-110"
-  >
-    <img
-      src="https://cdn.simpleicons.org/instagram"
-      alt="Instagram"
-      class="w-8 h-8"
-    />
-  </a>
-
-  <!-- 教材 -->
-  <a
-    href="/resources/"
-    aria-label="教材"
-    class="transition hover:scale-110"
-  >
-    <img
-      src="https://cdn.simpleicons.org/bookstack"
-      alt="教材"
-      class="w-8 h-8"
-    />
-  </a>
-
-
-<script>
-function updateClock() {
-    const now = new Date();
-
-    document.getElementById("clock").textContent =
-        now.toLocaleTimeString("zh-TW", {
-            hour12: false,
-            timeZone: "Asia/Taipei"
-        });
-}
-
-updateClock();
-setInterval(updateClock,1000);
-</script>
-
 </body>
 </html>
 
@@ -186,21 +155,17 @@ setInterval(updateClock,1000);
 <script>
   import 'overlayscrollbars/overlayscrollbars.css';
   import { OverlayScrollbars } from 'overlayscrollbars';
-  import {getHue, getStoredTheme, setHue, setTheme} from "../utils/setting-utils";
-  import {pathsEqual, url} from "../utils/url-utils";
-  import { BANNER_HEIGHT, BANNER_HEIGHT_HOME, BANNER_HEIGHT_EXTEND, MAIN_PANEL_OVERLAPS_BANNER_HEIGHT } from "../constants/constants";
+  import { getHue, getStoredTheme, setHue, setTheme } from "../utils/setting-utils";
   import { siteConfig } from '../config';
 
-  const bannerEnabled = !!document.getElementById('banner-wrapper');
-
-  function setClickOutsideToClose(panel, ignores) {
+  function setClickOutsideToClose(panel: string, ignores: string[]) {
     document.addEventListener("click", event => {
-      let panelDom = document.getElementById(panel);
-      let tDom = event.target;
-      if (!(tDom instanceof Node)) return;
-      for (let ig of ignores) {
-        let ie = document.getElementById(ig);
-        if (ie == tDom || (ie?.contains(tDom))) return;
+      const panelDom = document.getElementById(panel);
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      for (const ignore of ignores) {
+        const ignoreElement = document.getElementById(ignore);
+        if (ignoreElement == target || ignoreElement?.contains(target)) return;
       }
       if (panelDom) panelDom.classList.add("float-panel-closed");
     });
@@ -210,21 +175,27 @@ setInterval(updateClock,1000);
   setClickOutsideToClose("nav-menu-panel", ["nav-menu-panel", "nav-menu-switch"]);
   setClickOutsideToClose("search-panel", ["search-panel", "search-bar", "search-switch"]);
 
-  function loadTheme() { const theme = getStoredTheme(); setTheme(theme); }
-  function loadHue() { setHue(getHue()); }
+  function loadTheme() {
+    const theme = getStoredTheme();
+    setTheme(theme);
+  }
+
+  function loadHue() {
+    setHue(getHue());
+  }
 
   function initCustomScrollbar() {
-    const bodyElement = document.querySelector('body');
+    const bodyElement = document.querySelector("body");
     if (!bodyElement) return;
     OverlayScrollbars({ target: bodyElement, cancel: { nativeScrollbarsOverlaid: true } }, {
-      scrollbars: { theme: 'scrollbar-base scrollbar-auto py-1', autoHide: 'move', autoHideDelay: 500 }
+      scrollbars: { theme: "scrollbar-base scrollbar-auto py-1", autoHide: "move", autoHideDelay: 500 },
     });
   }
 
   function showBanner() {
     if (!siteConfig.banner.enable) return;
-    const banner = document.getElementById('banner');
-    if (banner) banner.classList.remove('opacity-0', 'scale-105');
+    const banner = document.getElementById("banner");
+    if (banner) banner.classList.remove("opacity-0", "scale-105");
   }
 
   function init() {
@@ -237,15 +208,9 @@ setInterval(updateClock,1000);
   init();
 
   const setup = () => {
-    window.swup?.hooks.on('content:replace', initCustomScrollbar);
+    window.swup?.hooks.on("content:replace", initCustomScrollbar);
   };
 
   if (window?.swup?.hooks) setup();
-  else document.addEventListener('swup:enable', setup);
-</script>
-
-<script>
-  import PhotoSwipeLightbox from "photoswipe/lightbox";
-  import "photoswipe/style.css";
-  
+  else document.addEventListener("swup:enable", setup);
 </script>

@@ -31,7 +31,7 @@ const renderedFriends = await Promise.all(
 					/>
 				) : (
 					<div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--btn-regular-bg)] text-[var(--primary)]">
-						<Icon name="material-symbols:groups-rounded" class="text-3xl" />
+						<Icon name="material-symbols:groups-rounded" class="h-8 w-8 shrink-0" aria-hidden="true" />
 					</div>
 				)}
 				<div>
@@ -45,13 +45,13 @@ const renderedFriends = await Promise.all(
 			<div class="mt-5 flex flex-wrap gap-2">
 				{friend.data.website && (
 					<a href={friend.data.website} target="_blank" rel="noopener noreferrer" class="btn-regular h-10 rounded-xl px-3 text-sm font-semibold">
-						<Icon name="material-symbols:language" class="mr-2 text-lg" />
+						<Icon name="material-symbols:language" class="mr-2 h-5 w-5 shrink-0" aria-hidden="true" />
 						網站
 					</a>
 				)}
 				{friend.data.instagram && (
 					<a href={friend.data.instagram} target="_blank" rel="noopener noreferrer" class="btn-regular h-10 rounded-xl px-3 text-sm font-semibold">
-						<Icon name="fa6-brands:instagram" class="mr-2 text-lg" />
+						<Icon name="fa6-brands:instagram" class="mr-2 h-5 w-5 shrink-0" aria-hidden="true" />
 						Instagram
 					</a>
 				)}
