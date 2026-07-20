@@ -1,0 +1,6 @@
+packages:
+  - "."
+overrides:
+  entities: 4.5.0
+  parse5: 7.2.1
+virtualStoreDirMaxLength: 60

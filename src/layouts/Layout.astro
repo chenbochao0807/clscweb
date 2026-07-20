@@ -9,6 +9,7 @@ import { AUTO_MODE, BANNER_HEIGHT, BANNER_HEIGHT_EXTEND, BANNER_HEIGHT_HOME, DAR
 import { defaultFavicons } from "../constants/icon";
 import type { Favicon } from "../types/config";
 import { pathsEqual, url } from "../utils/url-utils";
+import { getBreadcrumbJsonLd, getCanonicalUrl, getDefaultDescription, getOrganizationJsonLd, getPageTitle, getWebPageJsonLd, getWebSiteJsonLd, type BreadcrumbItem, type JsonLdValue } from "../utils/seo";
 import "katex/dist/katex.css";
 
 interface Props {
@@ -17,17 +18,32 @@ interface Props {
   description?: string;
   lang?: string;
   setOGTypeArticle?: boolean;
+  canonical?: string;
+  robots?: string;
+  ogImage?: string;
+  breadcrumbs?: BreadcrumbItem[];
+  jsonLd?: JsonLdValue;
 }
 
-let { title, banner, description, lang, setOGTypeArticle } = Astro.props;
+let { title, banner, description, lang, setOGTypeArticle, canonical, robots, ogImage, breadcrumbs, jsonLd } = Astro.props;
 
 const isHomePage = pathsEqual(Astro.url.pathname, url("/"));
+const pageTitle = getPageTitle(title);
+const pageDescription = getDefaultDescription(description);
+const canonicalUrl = getCanonicalUrl(canonical || Astro.url.pathname);
+const pageOgImage = ogImage || banner || siteConfig.defaultOgImage;
+const pageBreadcrumbs = breadcrumbs && breadcrumbs.length > 0 ? breadcrumbs : [{ name: siteConfig.title, url: "/" }];
+const defaultJsonLd = [
+	getOrganizationJsonLd(),
+	getWebSiteJsonLd(),
+	getWebPageJsonLd(pageTitle, pageDescription, canonicalUrl),
+	getBreadcrumbJsonLd(pageBreadcrumbs),
+];
+const structuredData = Array.isArray(jsonLd) ? [...defaultJsonLd, ...jsonLd] : jsonLd ? [...defaultJsonLd, jsonLd] : defaultJsonLd;
 
 const configHue = siteConfig.themeColor.hue;
 banner = siteConfig.banner.src;
 const enableBanner = siteConfig.banner.enable;
-
-let pageTitle = title ? `${title} - ${siteConfig.title}` : `${siteConfig.title} - ${siteConfig.subtitle}`;
 
 const favicons = siteConfig.favicon.length > 0 ? siteConfig.favicon : defaultFavicons;
 
@@ -43,19 +59,40 @@ const bannerOffset = bannerOffsetByPosition[siteConfig.banner.position || "cente
 <head>
   <title>{pageTitle}</title>
   <meta charset="UTF-8" />
-  <meta name="description" content={description || pageTitle}>
+  <meta name="description" content={pageDescription}>
   <meta name="author" content={profileConfig.name}>
+  <meta name="robots" content={robots || "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"}>
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#0f766e" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.instagram.com https://pagefind.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https:; frame-src 'self' https://www.youtube.com https://calendar.google.com https://www.instagram.com;" />
+  <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  {siteConfig.googleSiteVerification && <meta name="google-site-verification" content={siteConfig.googleSiteVerification} />}
+  {siteConfig.bingSiteVerification && <meta name="msvalidate.01" content={siteConfig.bingSiteVerification} />}
   <meta property="og:site_name" content={siteConfig.title}>
-  <meta property="og:url" content={Astro.url}>
+  <meta property="og:url" content={canonicalUrl}>
   <meta property="og:title" content={pageTitle}>
-  <meta property="og:description" content={description || pageTitle}>
-  {setOGTypeArticle ? <meta property="og:type" content="article" /> : <meta property="og:type" content="website" />}
+  <meta property="og:description" content={pageDescription}>
+  <meta property="og:type" content={setOGTypeArticle ? "article" : "website"}>
+  <meta property="og:image" content={getCanonicalUrl(pageOgImage)}>
+  <meta property="og:image:alt" content={pageTitle}>
+  <meta property="og:locale" content={siteConfig.lang.replace("_", "-")}>
   <meta name="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content={Astro.url}>
+  <meta property="twitter:url" content={canonicalUrl}>
   <meta name="twitter:title" content={pageTitle}>
-  <meta name="twitter:description" content={description || pageTitle}>
+  <meta name="twitter:description" content={pageDescription}>
+  <meta name="twitter:image" content={getCanonicalUrl(pageOgImage)}>
   <meta name="viewport" content="width=device-width" />
   <meta name="generator" content={Astro.generator} />
+  <link rel="canonical" href={canonicalUrl} />
+  <link rel="manifest" href={url("/manifest.json")} />
+  <link rel="apple-touch-icon" href={url("/favicon/favicon-light-180.png")} />
+  <link rel="icon" href={url("/favicon/favicon-light-32.png")} sizes="32x32" />
+  <link rel="icon" href={url("/favicon/favicon-light-192.png")} sizes="192x192" />
+  <link rel="preconnect" href="https://www.googletagmanager.com" />
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+  <link rel="alternate" type="application/rss+xml" title={profileConfig.name} href={new URL("rss.xml", siteConfig.siteUrl).href}/>
 
   <style>
     @font-face {
@@ -80,6 +117,10 @@ const bannerOffset = bannerOffsetByPosition[siteConfig.banner.position || "cente
     <link rel="icon" href={favicon.src.startsWith('/') ? url(favicon.src) : favicon.src} sizes={favicon.sizes} media={favicon.theme && `(prefers-color-scheme: ${favicon.theme})`} />
   ))}
 
+  {structuredData.map((schema) => (
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+  ))}
+
   <script is:inline define:vars={{DEFAULT_THEME, LIGHT_MODE, DARK_MODE, AUTO_MODE, BANNER_HEIGHT_EXTEND, PAGE_WIDTH, configHue}}>
     const theme = localStorage.getItem('theme') || DEFAULT_THEME;
     switch (theme) {
@@ -99,7 +140,6 @@ const bannerOffset = bannerOffsetByPosition[siteConfig.banner.position || "cente
   <style define:vars={{ configHue, 'page-width': `${PAGE_WIDTH}rem` }}></style>
 
   <slot name="head"></slot>
-  <link rel="alternate" type="application/rss+xml" title={profileConfig.name} href={`${Astro.site}rss.xml`}/>
 </head>
 <!-- Google tag (gtag.js) -->
 <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-4SYCYFL69R"></script>

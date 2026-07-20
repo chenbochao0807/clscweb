@@ -24,14 +24,31 @@ const socialLinks = (member: CollectionEntry<"members">) =>
 	].filter((link) => link.href);
 ---
 
-<div class="grid gap-4 md:grid-cols-2">
+<div id="member-grid" class="grid gap-4 md:grid-cols-2">
 	{renderedMembers.map(({ member, Content }) => (
-		<article class="card-base relative border border-[var(--line-divider)] p-6 pr-28">
+		<article
+			class="card-base relative border border-[var(--line-divider)] p-6 pr-28"
+			data-member-card
+			data-member-name={member.data.name}
+			data-member-position={member.data.position}
+			data-member-order={member.data.order}
+			data-member-search={[
+				member.data.name,
+				member.data.position,
+				member.data.bio,
+				member.data.github,
+				member.data.instagram,
+				member.data.threads,
+			].join(" ").toLowerCase()}
+		>
 			<div class="flex gap-5">
 				{member.data.photo && (
 					<img
 						src={member.data.photo}
 						alt={`${member.data.name} profile photo`}
+						title={`${member.data.name} profile photo`}
+						width="768"
+						height="768"
 						class="absolute right-6 top-6 h-20 w-20 shrink-0 rounded-xl object-cover"
 						loading="lazy"
 						decoding="async"

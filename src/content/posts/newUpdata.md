@@ -182,7 +182,7 @@ allowfullscreen>
 本網站可以作為台灣社團架設的簡易架構和模板，歡迎fork
 ##  Live Demo (Origin)
 
- https://fuwari.vercel.app/
+ https://clhs.dpdns.org/
 
 ##  正式網站
 

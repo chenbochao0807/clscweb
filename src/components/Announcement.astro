@@ -1,17 +1,144 @@
 ---
-const announcements = [
-	"第 17 屆壢中科研，歡迎追蹤最新社團消息",
-	"社員招生資訊將於確認後公告",
-	"近期社課與活動會持續更新",
-	"追蹤IG：@clsc_17th",
+import { getCollection, render } from "astro:content";
+import MarkdownIt from "markdown-it";
+
+type AnnouncementSource = {
+	title: string;
+	href?: string;
+	body?: string;
+	order?: number;
+};
+
+type RenderedAnnouncement = AnnouncementSource & {
+	content?: Awaited<ReturnType<typeof render>>["Content"];
+	bodyHtml?: string;
+};
+
+interface Props {
+	items?: AnnouncementSource[];
+}
+
+const markdown = new MarkdownIt({
+	html: false,
+	linkify: true,
+	breaks: false,
+});
+
+const fallbackAnnouncements: AnnouncementSource[] = [
+	{
+		title: "第 17 屆壢中科研",
+		href: "/about/",
+		body: "歡迎追蹤最新社團消息，這裡會持續更新社團介紹與活動資訊。",
+		order: 1,
+	},
+	{
+		title: "社員招生資訊",
+		href: "/join/",
+		body: "社員招生資訊將於確認後公告，請留意最新通知。",
+		order: 2,
+	},
+	{
+		title: "社課與活動更新",
+		href: "/archive/",
+		body: "近期社課與活動會持續更新，歡迎到 [文章總覽](/archive/) 查看完整紀錄。",
+		order: 3,
+	},
+	{
+		title: "追蹤 Instagram",
+		href: "https://www.instagram.com/clsc_17th/",
+		body: "追蹤 @[clsc_17th](https://www.instagram.com/clsc_17th/) 獲得即時消息。",
+		order: 4,
+	},
 ];
+
+const providedItems = Astro.props.items ?? [];
+
+const collectionItems = providedItems.length === 0
+	? (await getCollection("announcements", ({ data }) => {
+		return import.meta.env.PROD ? data.draft !== true : true;
+	}))
+		.sort((a, b) => a.data.order - b.data.order)
+		.map(async (entry) => {
+			const { Content } = await render(entry);
+			return {
+				title: entry.data.title,
+				href: entry.data.href,
+				order: entry.data.order,
+				content: Content,
+			} satisfies RenderedAnnouncement;
+		})
+	: [];
+
+const resolvedCollectionItems = collectionItems.length > 0 ? await Promise.all(collectionItems) : [];
+
+const resolvedManualItems = providedItems.map((item) => ({
+	...item,
+	bodyHtml: item.body ? markdown.renderInline(item.body) : "",
+})) satisfies RenderedAnnouncement[];
+
+const resolvedAnnouncements = (resolvedCollectionItems.length > 0
+	? resolvedCollectionItems
+	: resolvedManualItems.length > 0
+		? resolvedManualItems
+		: fallbackAnnouncements.map((item) => ({
+			...item,
+			bodyHtml: item.body ? markdown.renderInline(item.body) : "",
+		}))) satisfies RenderedAnnouncement[];
+
+const marqueeAnnouncements = resolvedAnnouncements.concat(resolvedAnnouncements);
+
+function isExternalHref(href?: string) {
+	return !!href && /^https?:\/\//i.test(href);
+}
 ---
 
 <section class="announcement" aria-label="最新公告">
-	<div class="marquee">
-		{announcements.concat(announcements).map((item) => (
-			<span>{item}</span>
-		))}
+	<div class="marquee" role="list">
+		{marqueeAnnouncements.map((item) => {
+			const itemHref = item.href || "";
+			const external = isExternalHref(itemHref);
+			const announcementBody = item.bodyHtml || "";
+
+			if (item.content) {
+				const Content = item.content;
+
+				return itemHref ? (
+					<a
+						role="listitem"
+						href={itemHref}
+						target={external ? "_blank" : null}
+						rel={external ? "noopener noreferrer" : null}
+						class="announcement-item announcement-link"
+					>
+						<span class="announcement-title">{item.title}</span>
+						<div class="announcement-body"><Content /></div>
+					</a>
+				) : (
+					<article role="listitem" class="announcement-item">
+						<span class="announcement-title">{item.title}</span>
+						<div class="announcement-body"><Content /></div>
+					</article>
+				);
+			}
+
+			return itemHref ? (
+				<a
+					role="listitem"
+					href={itemHref}
+					target={external ? "_blank" : null}
+					rel={external ? "noopener noreferrer" : null}
+					class="announcement-item announcement-link"
+				>
+					<span class="announcement-title">{item.title}</span>
+					<div class="announcement-body" set:html={announcementBody}></div>
+				</a>
+			) : (
+				<article role="listitem" class="announcement-item">
+					<span class="announcement-title">{item.title}</span>
+					<div class="announcement-body" set:html={announcementBody}></div>
+				</article>
+			);
+		})}
 	</div>
 </section>
 
@@ -30,9 +157,10 @@ const announcements = [
 .marquee {
 	display: flex;
 	align-items: center;
+	gap: 2rem;
 	white-space: nowrap;
 	padding: 14px 0;
-	animation: marquee 28s linear infinite;
+	animation: marquee 30s linear infinite;
 	color: var(--text-normal);
 	will-change: transform;
 }
@@ -42,18 +170,60 @@ const announcements = [
 	animation-play-state: paused;
 }
 
-.marquee span {
+.announcement-item {
 	position: relative;
-	margin-right: 80px;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.75rem;
+	flex: 0 0 auto;
+	min-width: max-content;
+	padding: 0 0 0 1.25rem;
 	color: var(--text-normal);
 	font-size: 15px;
 	font-weight: 600;
+	text-decoration: none;
 }
 
-.marquee span::before {
+.announcement-item::before {
 	content: "｜";
-	margin-right: 12px;
+	position: absolute;
+	left: 0;
 	color: color-mix(in srgb, var(--primary) 65%, var(--text-muted));
+}
+
+.announcement-title {
+	padding: 0.35rem 0.75rem;
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--primary) 10%, transparent);
+	color: var(--primary);
+	font-size: 0.8125rem;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	flex: 0 0 auto;
+}
+
+.announcement-body {
+	display: inline-flex;
+	align-items: center;
+	color: var(--text-normal);
+	font-weight: 500;
+	white-space: nowrap;
+}
+
+.announcement-body :global(p) {
+	margin: 0;
+	display: inline;
+}
+
+.announcement-body :global(a) {
+	color: var(--primary);
+	text-decoration: underline;
+	text-underline-offset: 0.15em;
+}
+
+.announcement-link:hover .announcement-title,
+.announcement-link:focus-visible .announcement-title {
+	background: color-mix(in srgb, var(--primary) 18%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {

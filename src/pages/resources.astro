@@ -9,7 +9,7 @@ const resources = (await getCollection("resources")).sort(
 );
 ---
 
-<MainGridLayout title="社課教材" description="壢中科研社課教材與專題資源">
+<MainGridLayout title="教材資源" description="整理 CLSC 的社課教材、簡報與專題資源。" breadcrumbs={[{ name: "首頁", url: "/" }, { name: "教材資源", url: "/resources/" }]} canonical={Astro.url.pathname}>
   <section class="card-base border border-[var(--line-divider)] p-6 md:p-8">
     <SectionHeader title="社課教材" eyebrow="Resources" description="依 Chemistry、Biology、Physics、Competition、Slides、GitHub 分類整理。" />
     <ResourceGrid resources={resources} />

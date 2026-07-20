@@ -9,9 +9,39 @@ const members = (await getCollection("members")).sort(
 );
 ---
 
-<MainGridLayout title="幹部介紹" description="幹部介紹">
+<MainGridLayout title="幹部介紹" description="認識 CLSC 壢中科研幹部、分工與聯絡方式。" breadcrumbs={[{ name: "首頁", url: "/" }, { name: "幹部介紹", url: "/members/" }]} canonical={Astro.url.pathname}>
     <section class="card-base border border-[var(--line-divider)] p-6 md:p-8">
-        <SectionHeader title="幹部介紹" eyebrow="Members" description="支援多端連結。" />
+        <SectionHeader title="幹部介紹" eyebrow="Members" description="支援搜尋、排序與多端連結。" />
+        <div class="mb-5 grid gap-3 md:grid-cols-[minmax(0,1fr)_14rem] md:items-end">
+            <label class="block">
+                <span class="mb-2 block text-sm font-semibold text-[var(--text-muted)]">搜尋幹部</span>
+                <input
+                    id="member-search"
+                    type="search"
+                    inputmode="search"
+                    autocomplete="off"
+                    placeholder="搜尋姓名、職位、簡介、社群連結..."
+                    class="w-full rounded-2xl border border-[var(--line-divider)] bg-[var(--card-bg)] px-4 py-3 text-sm text-[var(--text-normal)] outline-none transition placeholder:text-black/30 focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 dark:placeholder:text-white/25"
+                />
+            </label>
+            <label class="block">
+                <span class="mb-2 block text-sm font-semibold text-[var(--text-muted)]">排序方式</span>
+                <select
+                    id="member-sort"
+                    class="w-full rounded-2xl border border-[var(--line-divider)] bg-[var(--card-bg)] px-4 py-3 text-sm text-[var(--text-normal)] outline-none transition focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20"
+                >
+                    <option value="order">預設排序</option>
+                    <option value="name">姓名 A-Z</option>
+                </select>
+            </label>
+        </div>
+        <div class="mb-4 flex items-center justify-between gap-3 text-sm text-[var(--text-muted)]">
+            <p id="member-result-count">載入中...</p>
+            <p>內容來源：Content Collection</p>
+        </div>
+        <div id="member-empty" class="card-base hidden border border-dashed border-[var(--line-divider)] px-6 py-10 text-center text-sm text-[var(--text-muted)]">
+            找不到符合條件的幹部，請調整搜尋關鍵字或排序方式。
+        </div>
         <MemberGrid members={members} />
     </section>
 </MainGridLayout>
@@ -23,3 +53,59 @@ const members = (await getCollection("members")).sort(
 ///></blockquote>
 
 ///<script async src="https://www.instagram.com/embed.js"></script>
+
+<script>
+    const sortMembers = () => {
+        const grid = document.getElementById("member-grid");
+        const searchInput = document.getElementById("member-search");
+        const sortSelect = document.getElementById("member-sort");
+        const resultCount = document.getElementById("member-result-count");
+        const emptyState = document.getElementById("member-empty");
+
+        if (!grid || !searchInput || !sortSelect || !resultCount || !emptyState) return;
+        if (grid.dataset.memberUiInitialized === "true") return;
+        grid.dataset.memberUiInitialized = "true";
+
+        const cards = Array.from(grid.querySelectorAll("[data-member-card]"));
+
+        const applySortAndFilter = () => {
+            const query = searchInput.value.trim().toLowerCase();
+            const sortMode = sortSelect.value;
+
+            const sortedCards = [...cards].sort((firstCard, secondCard) => {
+                const firstOrder = Number(firstCard.getAttribute("data-member-order") ?? "0");
+                const secondOrder = Number(secondCard.getAttribute("data-member-order") ?? "0");
+
+                if (sortMode === "name") {
+                    const firstName = firstCard.getAttribute("data-member-name") ?? "";
+                    const secondName = secondCard.getAttribute("data-member-name") ?? "";
+                    return firstName.localeCompare(secondName, "zh-Hant");
+                }
+
+                return firstOrder - secondOrder;
+            });
+
+            let visibleCount = 0;
+
+            sortedCards.forEach((card) => {
+                const searchableText = card.getAttribute("data-member-search") ?? "";
+                const matches = query.length === 0 || searchableText.includes(query);
+
+                card.hidden = !matches;
+                if (matches) visibleCount++;
+                grid.appendChild(card);
+            });
+
+            resultCount.textContent = `${visibleCount} 位幹部`;
+            emptyState.hidden = visibleCount > 0;
+        };
+
+        searchInput.addEventListener("input", applySortAndFilter);
+        sortSelect.addEventListener("change", applySortAndFilter);
+
+        applySortAndFilter();
+    };
+
+    sortMembers();
+    document.addEventListener("astro:page-load", sortMembers);
+</script>

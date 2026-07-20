@@ -3,6 +3,7 @@ import { Icon } from "astro-icon/components";
 import SectionHeader from "../components/SectionHeader.astro";
 import GitHubStats from "../components/GitHubStats.astro";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
+import ImageWrapper from "../components/misc/ImageWrapper.astro";
 
 const links = [
   {
@@ -18,7 +19,7 @@ const links = [
 ];
 ---
 
-<MainGridLayout title="加入我們" description="加入壢中科研 CLSC">
+<MainGridLayout title="加入我們" description="了解如何加入 CLSC 壢中科研，並查看社群與 GitHub 連結。" breadcrumbs={[{ name: "首頁", url: "/" }, { name: "加入我們", url: "/join/" }]} canonical={Astro.url.pathname}>
   <hr class="my-8 border-[var(--line-divider)]" />
 
 <div>
@@ -31,10 +32,12 @@ const links = [
   </p>
 
   <div class="grid gap-4 lg:grid-cols-2">
-    <img
-      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdA_HfB5ORvtzRRhYFTq9JD92wMhnz8z2PgF8eEgEiGA&s=10"
-      alt="CLSC GitHub Repository"
-      loading="lazy"
+    <ImageWrapper
+      src="/banner.jpg"
+      alt="CLSC 壢中科研橫幅"
+      title="CLSC 壢中科研"
+      width="1600"
+      height="900"
       class="w-full rounded-xl"
     />
 

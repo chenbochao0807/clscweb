@@ -6,7 +6,9 @@ import GitHubRelease from "../components/GitHubRelease.astro";
 
 <MainGridLayout
 title="下載中心"
-description="CLSC Download Center"
+description="下載壢中科研相關線上應用、檔案與延伸資源(目前只有app)。"
+breadcrumbs={[{ name: "首頁", url: "/" }, { name: "下載中心", url: "/downloads/" }]}
+canonical={Astro.url.pathname}
 >
 
 <section class="card-base p-8">
@@ -14,7 +16,7 @@ description="CLSC Download Center"
 <SectionHeader
 title="下載中心"
 eyebrow="Downloads"
-description="CLSC官方APP下載中心"
+description="CLSC 官方 APP 與相關檔案下載中心。"
 />
 
 <GitHubRelease />

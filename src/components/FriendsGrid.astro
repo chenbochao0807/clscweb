@@ -25,6 +25,9 @@ const renderedFriends = await Promise.all(
 					<img
 						src={friend.data.logo}
 						alt={`${friend.data.name} logo`}
+						title={`${friend.data.name} logo`}
+						width="512"
+						height="512"
 						class="h-16 w-16 rounded-2xl object-cover"
 						loading="lazy"
 						decoding="async"

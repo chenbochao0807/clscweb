@@ -1,0 +1,138 @@
+---
+import { Icon } from "astro-icon/components";
+
+const quickLinks = [
+	{ label: "最新文章", href: "/archive/", icon: "material-symbols:newspaper-rounded" },
+	{ label: "社團介紹", href: "/about/", icon: "material-symbols:science" },
+	{ label: "教學資源", href: "/resources/", icon: "material-symbols:menu-book-rounded" },
+	{ label: "研究成果", href: "/achievements/", icon: "material-symbols:trophy" },
+];
+
+const shortcuts = [
+	{ label: "首頁", href: "/" },
+	{ label: "社團介紹", href: "/about/" },
+	{ label: "最新文章", href: "/archive/" },
+	{ label: "教學資源", href: "/resources/" },
+	{ label: "活動", href: "/achievements/" },
+];
+---
+
+<section
+	class="mb-10 rounded-2xl border border-[var(--line-divider)] bg-[var(--card-bg)] p-6 md:p-10"
+	aria-labelledby="home-title"
+>
+	<div class="grid gap-8 lg:grid-cols-[1.3fr_0.7fr] lg:items-start">
+		<div>
+			<p class="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-[var(--primary)]">
+				Main
+			</p>
+
+			<h1
+				id="home-title"
+				class="text-4xl font-bold leading-tight text-[var(--text-normal)] md:text-5xl"
+			>
+				中大壢中科研社
+			</h1>
+
+			<p class="mt-5 max-w-3xl text-base leading-8 text-[var(--text-muted)]">
+				CLSC是國立中央大學附屬中壢高中科研社，透過社課、實驗與各類科學活動，
+				培養社員的科學思考、實作能力及團隊合作精神(心動了嗎)。
+			</p>
+
+			<p class="mt-4 max-w-3xl text-base leading-8 text-[var(--text-muted)]">
+				小破站整理社團介紹、活動紀錄、教學資源與研究成果，方便社員查找資料，
+				也讓對科研有興趣的同學更認識壢中科研。
+			</p>
+
+			<div class="mt-8 flex flex-wrap gap-3">
+				{quickLinks.map((link) => (
+					<a
+						href={link.href}
+						class="inline-flex items-center rounded-lg border border-[var(--line-divider)] px-4 py-2 text-sm font-medium text-[var(--text-normal)] transition-colors hover:border-[var(--primary)] hover:text-[var(--primary)]"
+					>
+						<Icon
+							name={link.icon}
+							class="mr-2 text-lg"
+							aria-hidden="true"
+						/>
+						{link.label}
+					</a>
+				))}
+			</div>
+		</div>
+
+		<aside class="rounded-xl border border-[var(--line-divider)] bg-[var(--card-bg)] p-6">
+			<h2 class="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--primary)]">
+				快連
+			</h2>
+
+			<div class="mt-4 flex flex-wrap gap-2">
+				{shortcuts.map((item) => (
+					<a
+						href={item.href}
+						class="rounded-full border border-[var(--line-divider)] px-3 py-1 text-sm text-[var(--text-muted)] transition-colors hover:border-[var(--primary)] hover:text-[var(--primary)]"
+					>
+						{item.label}
+					</a>
+				))}
+			</div>
+
+			<div class="mt-6 space-y-3 text-sm leading-7 text-[var(--text-muted)]">
+				<p>
+					網站持續整理社團介紹、活動紀錄、教材及歷屆研究成果，
+					方便快速查閱與瀏覽。
+				</p>
+
+				<p>
+					如果是第一次認識壢中科研，可以先閱讀文章的More about CLSC；
+					想了解近期動態，則可直接前往最新文章或活動。
+				</p>
+			</div>
+		</aside>
+	</div>
+</section>
+
+<section
+	class="mb-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4"
+	aria-label="特色摘要"
+>
+	<article class="rounded-xl border border-[var(--line-divider)] bg-[var(--card-bg)] p-6">
+		<h2 class="text-lg font-semibold text-[var(--text-normal)]">
+			社團介紹
+		</h2>
+
+		<p class="mt-3 text-sm leading-7 text-[var(--text-muted)]">
+			了解社團事務
+		</p>
+	</article>
+
+	<article class="rounded-xl border border-[var(--line-divider)] bg-[var(--card-bg)] p-6">
+		<h2 class="text-lg font-semibold text-[var(--text-normal)]">
+			最新活動
+		</h2>
+
+		<p class="mt-3 text-sm leading-7 text-[var(--text-muted)]">
+			整理近期公告、社課紀錄與活動內容，掌握社團最新消息，贏過99%高中生
+		</p>
+	</article>
+
+	<article class="rounded-xl border border-[var(--line-divider)] bg-[var(--card-bg)] p-6">
+		<h2 class="text-lg font-semibold text-[var(--text-normal)]">
+			教學資源
+		</h2>
+
+		<p class="mt-3 text-sm leading-7 text-[var(--text-muted)]">
+			收錄社課教材、簡報、實驗內容及延伸閱讀，方便社員學習與複習
+		</p>
+	</article>
+
+	<article class="rounded-xl border border-[var(--line-divider)] bg-[var(--card-bg)] p-6">
+		<h2 class="text-lg font-semibold text-[var(--text-normal)]">
+			活動
+		</h2>
+
+		<p class="mt-3 text-sm leading-7 text-[var(--text-muted)]">
+			最新活動預告
+		</p>
+	</article>
+</section>

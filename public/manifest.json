@@ -1,0 +1,22 @@
+{
+  "name": "CLSC 壢中科研",
+  "short_name": "CLSC",
+  "description": "CLSC 壢中科研社網站，提供社團介紹、文章、活動與教學資源。",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f8faf8",
+  "theme_color": "#0f766e",
+  "icons": [
+    {
+      "src": "/favicon/favicon-light-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon/favicon-light-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

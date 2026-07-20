@@ -1,0 +1,32 @@
+---
+import type { GetStaticPaths } from "astro";
+import ArchivePanel from "../../components/ArchivePanel.svelte";
+import SectionHeader from "../../components/SectionHeader.astro";
+import MainGridLayout from "../../layouts/MainGridLayout.astro";
+import { getCategoryList, getSortedPostsList } from "../../utils/content-utils";
+
+export const getStaticPaths = (async () => {
+	const categories = await getCategoryList();
+	return categories.map((category) => ({
+		params: { category: category.url.includes("/uncategorized/") ? "uncategorized" : category.name },
+		props: { category: category.url.includes("/uncategorized/") ? "uncategorized" : category.name },
+	}));
+}) satisfies GetStaticPaths;
+
+const { category } = Astro.props;
+const sortedPosts = await getSortedPostsList();
+const isUncategorized = category === "uncategorized";
+const displayCategory = isUncategorized ? "未分類" : category;
+const breadcrumbs = [
+	{ name: "首頁", url: "/" },
+	{ name: "分類", url: "/archive/" },
+	{ name: displayCategory, url: Astro.url.pathname },
+];
+---
+
+<MainGridLayout title={`分類：${displayCategory}`} description={`瀏覽 CLSC 壢中科研中屬於 ${displayCategory} 的文章。`} canonical={Astro.url.pathname} breadcrumbs={breadcrumbs}>
+	<section class="card-base border border-[var(--line-divider)] p-6 md:p-8">
+		<SectionHeader title={`分類：${displayCategory}`} eyebrow="Categories" description={`整理 ${displayCategory} 分類下的社團文章、資源與活動紀錄。`} />
+		<ArchivePanel categories={isUncategorized ? [] : [category]} uncategorized={isUncategorized} sortedPosts={sortedPosts} client:only="svelte" />
+	</section>
+</MainGridLayout>

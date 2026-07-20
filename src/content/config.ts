@@ -22,6 +22,14 @@ const postsCollection = defineCollection({
 const specCollection = defineCollection({
 	schema: z.object({}),
 });
+const announcementsCollection = defineCollection({
+	schema: z.object({
+		title: z.string(),
+		href: z.string().optional().default(""),
+		order: z.number().optional().default(99),
+		draft: z.boolean().optional().default(false),
+	}),
+});
 const membersCollection = defineCollection({
 	schema: z.object({
 		name: z.string(),
@@ -65,6 +73,7 @@ const friendsCollection = defineCollection({
 export const collections = {
 	posts: postsCollection,
 	spec: specCollection,
+	announcements: announcementsCollection,
 	members: membersCollection,
 	resources: resourcesCollection,
 	achievements: achievementsCollection,

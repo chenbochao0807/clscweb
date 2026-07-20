@@ -32,6 +32,9 @@ const renderedAchievements = await Promise.all(
 					<img
 						src={achievement.data.photo}
 						alt={`${achievement.data.competition} ${achievement.data.award}`}
+						title={`${achievement.data.competition} ${achievement.data.award}`}
+						width="1200"
+						height="900"
 						class="aspect-[4/3] w-full rounded-2xl object-cover"
 						loading="lazy"
 						decoding="async"

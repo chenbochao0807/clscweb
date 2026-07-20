@@ -8,7 +8,7 @@ import { getSortedPostsList } from "../utils/content-utils";
 const sortedPostsList = await getSortedPostsList();
 ---
 
-<MainGridLayout title={i18n(I18nKey.archive)}>
+<MainGridLayout title="文章總覽" description="瀏覽 CLSC 壢中科研所有文章、公告與社團紀錄。" breadcrumbs={[{ name: "首頁", url: "/" }, { name: "文章總覽", url: "/archive/" }]} canonical={Astro.url.pathname}>
     <ArchivePanel sortedPosts={sortedPostsList} client:only="svelte"></ArchivePanel>
 </MainGridLayout>
 

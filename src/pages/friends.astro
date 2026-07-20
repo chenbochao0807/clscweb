@@ -9,9 +9,9 @@ const friends = (await getCollection("friends")).sort(
 );
 ---
 
-<MainGridLayout title="合作夥伴" description="壢中科研合作社群">
+<MainGridLayout title="合作夥伴" description="整理 CLSC 壢中科研的合作社群、學校與網站連結。" breadcrumbs={[{ name: "首頁", url: "/" }, { name: "合作夥伴", url: "/friends/" }]} canonical={Astro.url.pathname}>
     <section class="card-base border border-[var(--line-divider)] p-6 md:p-8">
-        <SectionHeader title="合作夥伴" description="整理合作社群、學校、網站與 Instagram 連結。" />
+        <SectionHeader title="合作夥伴" description="整理合作或友好社群、學校、網站與 Instagram 連結。" />
         <FriendsGrid friends={friends} />
     </section>
 </MainGridLayout>

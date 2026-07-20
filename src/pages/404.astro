@@ -1,0 +1,41 @@
+---
+import Search from "../components/Search.svelte";
+import SectionHeader from "../components/SectionHeader.astro";
+import MainGridLayout from "../layouts/MainGridLayout.astro";
+import { getSortedPostsList } from "../utils/content-utils";
+
+const sortedPosts = await getSortedPostsList();
+const popularPosts = sortedPosts.slice(0, 5);
+const breadcrumbs = [
+	{ name: "首頁", url: "/" },
+	{ name: "404", url: "/404/" },
+];
+---
+
+<MainGridLayout title="找不到頁面，總之掛了" description="頁面跟你的感情一樣不存在，請使用搜尋或返回首頁瀏覽內容。" canonical={Astro.url.pathname} breadcrumbs={breadcrumbs} robots="noindex,follow">
+	<section class="card-base border border-[var(--line-divider)] p-6 md:p-8 space-y-8">
+		<div>
+			<SectionHeader title="找不到頁面GG掛了" eyebrow="404" description="你要找的內容可能已移動或不存在消失於蒼茫宇宙。可以直接搜尋、回到首頁，或查看最新文章與活動。" />
+			<div class="grid gap-4 md:grid-cols-3">
+				<a class="btn-regular h-11 rounded-xl px-5 font-semibold" href="/">回到首頁</a>
+				<a class="btn-regular h-11 rounded-xl px-5 font-semibold" href="/archive/">最新文章</a>
+				<a class="btn-regular h-11 rounded-xl px-5 font-semibold" href="/achievements/">活動紀錄</a>
+			</div>
+		</div>
+
+		<div class="rounded-[1.25rem] border border-[var(--line-divider)] bg-[var(--card-bg)] p-4 md:p-6">
+			<Search client:load />
+		</div>
+
+		<div>
+			<h2 class="mb-4 text-xl font-bold text-[var(--text-normal)]">最新文章</h2>
+			<ul class="space-y-3">
+				{popularPosts.map((post) => (
+					<li>
+						<a href={`/posts/${post.slug}/`} class="text-[var(--text-normal)] transition hover:text-[var(--primary)]">{post.data.title}</a>
+					</li>
+				))}
+			</ul>
+		</div>
+	</section>
+</MainGridLayout>

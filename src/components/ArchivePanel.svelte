@@ -7,12 +7,12 @@ import { getPostUrlBySlug } from "../utils/url-utils";
 
 export let tags: string[] = [];
 export let categories: string[] = [];
+export let uncategorized = false;
 export let sortedPosts: Post[] = [];
 
-const params = new URLSearchParams(window.location.search);
-tags = params.has("tag") ? params.getAll("tag") : [];
-categories = params.has("category") ? params.getAll("category") : [];
-const uncategorized = params.get("uncategorized");
+let queryTags: string[] = [];
+let queryCategories: string[] = [];
+let queryUncategorized = false;
 
 interface Post {
 	slug: string;
@@ -42,23 +42,33 @@ function formatTag(tagList: string[]) {
 }
 
 onMount(async () => {
+    if (tags.length === 0 && categories.length === 0 && !uncategorized) {
+        const params = new URLSearchParams(window.location.search);
+        queryTags = params.has("tag") ? params.getAll("tag") : [];
+        queryCategories = params.has("category") ? params.getAll("category") : [];
+        queryUncategorized = params.has("uncategorized");
+    }
+
+    const activeTags = tags.length > 0 ? tags : queryTags;
+    const activeCategories = categories.length > 0 ? categories : queryCategories;
+    const activeUncategorized = uncategorized || queryUncategorized;
 	let filteredPosts: Post[] = sortedPosts;
 
-	if (tags.length > 0) {
+    if (activeTags.length > 0) {
 		filteredPosts = filteredPosts.filter(
 			(post) =>
 				Array.isArray(post.data.tags) &&
-				post.data.tags.some((tag) => tags.includes(tag)),
+                post.data.tags.some((tag) => activeTags.includes(tag)),
 		);
 	}
 
-	if (categories.length > 0) {
+    if (activeCategories.length > 0) {
 		filteredPosts = filteredPosts.filter(
-			(post) => post.data.category && categories.includes(post.data.category),
+            (post) => post.data.category && activeCategories.includes(post.data.category),
 		);
 	}
 
-	if (uncategorized) {
+    if (activeUncategorized) {
 		filteredPosts = filteredPosts.filter((post) => !post.data.category);
 	}
 

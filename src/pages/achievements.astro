@@ -9,7 +9,7 @@ const achievements = (await getCollection("achievements")).sort(
 );
 ---
 
-<MainGridLayout title="活動" description="壢中科研活動">
+<MainGridLayout title="活動紀錄" description="整理 CLSC 壢中科研的社課、競賽與研究成果。" breadcrumbs={[{ name: "首頁", url: "/" }, { name: "活動紀錄", url: "/achievements/" }]} canonical={Astro.url.pathname}>
     <section class="card-base border border-[var(--line-divider)] p-6 md:p-8">
         <SectionHeader title="活動紀錄" description="整理社團活動、競賽成果與專題紀錄。" />
         <AchievementTimeline achievements={achievements} />

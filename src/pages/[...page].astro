@@ -26,9 +26,14 @@ export const getStaticPaths = (async ({ paginate }) => {
 const { page } = Astro.props;
 const len = page.data.length;
 const isFirstPage = page.currentPage === 1;
+const pageTitle = isFirstPage ? "CLSC 壢中科研" : `最新消息 第 ${page.currentPage} 頁`;
+const pageDescription = isFirstPage
+    ? "CLSC 壢中科研首頁，整理社團介紹、最新活動、教學資源與研究成果，方便快速認識壢中科研。"
+    : `CLSC 壢中科研最新消息第 ${page.currentPage} 頁，瀏覽社團文章、公告與活動紀錄。`;
+const breadcrumbs = [{ name: "首頁", url: "/" }];
 ---
 
-<MainGridLayout>
+<MainGridLayout title={pageTitle} description={pageDescription} canonical={Astro.url.pathname} breadcrumbs={breadcrumbs}>
     {isFirstPage && (
         <>
             <HeroSection />

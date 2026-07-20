@@ -1,0 +1,30 @@
+---
+import type { GetStaticPaths } from "astro";
+import ArchivePanel from "../../components/ArchivePanel.svelte";
+import SectionHeader from "../../components/SectionHeader.astro";
+import MainGridLayout from "../../layouts/MainGridLayout.astro";
+import { getSortedPostsList, getTagList } from "../../utils/content-utils";
+
+export const getStaticPaths = (async () => {
+	const tags = await getTagList();
+	return tags.map((tag) => ({
+		params: { tag: tag.name },
+		props: { tag: tag.name },
+	}));
+}) satisfies GetStaticPaths;
+
+const { tag } = Astro.props;
+const sortedPosts = await getSortedPostsList();
+const breadcrumbs = [
+	{ name: "首頁", url: "/" },
+	{ name: "標籤", url: "/archive/" },
+	{ name: tag, url: Astro.url.pathname },
+];
+---
+
+<MainGridLayout title={`標籤：${tag}`} description={`瀏覽所有包含 ${tag} 的 CLSC 壢中科研文章與社團紀錄。`} canonical={Astro.url.pathname} breadcrumbs={breadcrumbs}>
+	<section class="card-base border border-[var(--line-divider)] p-6 md:p-8">
+		<SectionHeader title={`標籤：${tag}`} eyebrow="Tags" description={`篩選出與 ${tag} 相關的文章、公告與活動紀錄。`} />
+		<ArchivePanel tags={[tag]} sortedPosts={sortedPosts} client:only="svelte" />
+	</section>
+</MainGridLayout>

@@ -50,6 +50,9 @@ const galleryImages = await getPublicImages();
 					<img
 						src={image.src}
 						alt={image.alt}
+						title={image.alt}
+						width="1200"
+						height="900"
 						class="aspect-[4/3] w-full object-cover transition duration-300 hover:scale-105"
 						loading="lazy"
 						decoding="async"

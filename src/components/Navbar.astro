@@ -19,8 +19,19 @@ let links: NavBarLink[] = navBarConfig.links.map(
 		return item;
 	},
 );
+
+function normalizePath(path: string) {
+	const normalized = path.replace(/\/+$/, "");
+	return normalized.length > 0 ? normalized : "/";
+}
+
+const currentPath = normalizePath(Astro.url.pathname);
+
+function isActiveLink(path: string) {
+	return normalizePath(path) === currentPath;
+}
 ---
-<div id="navbar" class="z-50 onload-animation">
+<div id="navbar" class="z-50 onload-animation transition-all duration-300">
     <div class="absolute h-8 left-0 right-0 -top-8 bg-[var(--card-bg)] transition"></div> <!-- used for onload animation -->
     <div class:list={[
         className,
@@ -31,10 +42,17 @@ let links: NavBarLink[] = navBarConfig.links.map(
                 {siteConfig.title}
             </div>
         </a>
-        <div class="hidden md:flex">
+        <div class="hidden md:flex" role="navigation" aria-label="主要導覽">
             {links.map((l) => {
+                const active = !l.external && isActiveLink(l.url);
                 return <a aria-label={l.name} href={l.external ? l.url : url(l.url)} target={l.external ? "_blank" : null}
-                          class="btn-plain scale-animation rounded-lg h-11 font-bold px-5 active:scale-95"
+                          rel={l.external ? "noopener noreferrer" : null}
+                          aria-current={active ? "page" : null}
+                          data-navbar-link
+                          class:list={[
+                              "btn-plain scale-animation rounded-lg h-11 font-bold px-5 active:scale-95",
+                              { "bg-[var(--btn-plain-bg-hover)] text-[var(--primary)]": active },
+                          ]}
                 >
                     <div class="flex items-center">
                         {l.name}
@@ -52,56 +70,300 @@ let links: NavBarLink[] = navBarConfig.links.map(
                     </button>
             )}
             <LightDarkSwitch></LightDarkSwitch>
-            <button aria-label="Menu" name="Nav Menu" class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90 md:!hidden" id="nav-menu-switch">
+                <button aria-label="主要導覽選單" aria-controls="nav-menu-panel" aria-expanded="false" aria-haspopup="dialog" name="Nav Menu" type="button" class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90 md:!hidden" id="nav-menu-switch">
                 <Icon name="material-symbols:menu-rounded" class="text-[1.25rem]"></Icon>
             </button>
         </div>
+            <div id="nav-menu-backdrop" class="fixed inset-0 z-40 hidden bg-black/30 backdrop-blur-[2px] md:hidden" aria-hidden="true"></div>
         <NavMenuPanel links={links}></NavMenuPanel>
         <DisplaySettings client:only="svelte"></DisplaySettings>
     </div>
 </div>
 
 <script>
-function switchTheme() {
-    if (localStorage.theme === 'dark') {
-        document.documentElement.classList.remove('dark');
-        localStorage.theme = 'light';
-    } else {
-        document.documentElement.classList.add('dark');
-        localStorage.theme = 'dark';
-    }
-}
+    const MOBILE_MEDIA_QUERY = window.matchMedia("(max-width: 767px)");
+    const ACTIVE_LINK_CLASS = "bg-[var(--btn-plain-bg-hover)]";
+    const ACTIVE_TEXT_CLASS = "text-[var(--primary)]";
 
-function loadButtonScript() {
-    let switchBtn = document.getElementById("scheme-switch");
-    if (switchBtn) {
-        switchBtn.onclick = function () {
-            switchTheme()
-        };
+    let menuOpen = false;
+    let isUpdatingMenuState = false;
+    let lastScrollY = window.scrollY;
+    let scrollFrame = 0;
+    let menuObserver;
+
+    function switchTheme() {
+        if (localStorage.theme === 'dark') {
+            document.documentElement.classList.remove('dark');
+            localStorage.theme = 'light';
+        } else {
+            document.documentElement.classList.add('dark');
+            localStorage.theme = 'dark';
+        }
     }
 
-    let settingBtn = document.getElementById("display-settings-switch");
-    if (settingBtn) {
-        settingBtn.onclick = function () {
-            let settingPanel = document.getElementById("display-setting");
-            if (settingPanel) {
-                settingPanel.classList.toggle("float-panel-closed");
+    function normalizePath(path) {
+        const normalized = path.replace(/\/+$/, "");
+        return normalized.length > 0 ? normalized : "/";
+    }
+
+    function isSamePath(href) {
+        try {
+            return normalizePath(new URL(href, window.location.origin).pathname) === normalizePath(window.location.pathname);
+        } catch {
+            return false;
+        }
+    }
+
+    function getMenuElements() {
+        const button = document.getElementById("nav-menu-switch");
+        const panel = document.getElementById("nav-menu-panel");
+        const backdrop = document.getElementById("nav-menu-backdrop");
+        return { button, panel, backdrop };
+    }
+
+    function getFocusableElements(panel) {
+        return Array.from(panel.querySelectorAll("a[href], button:not([disabled]), [tabindex]:not([tabindex='-1'])")).filter((element) => {
+            return element instanceof HTMLElement && !element.hasAttribute("disabled");
+        });
+    }
+
+    function focusFirstMenuItem(panel) {
+        const focusable = getFocusableElements(panel);
+        if (focusable.length > 0) {
+            focusable[0].focus({ preventScroll: true });
+            return;
+        }
+        panel.focus({ preventScroll: true });
+    }
+
+    function updateDrawerLayout(panel) {
+        if (MOBILE_MEDIA_QUERY.matches) {
+            panel.style.left = "1rem";
+            panel.style.right = "1rem";
+            panel.style.width = "auto";
+            panel.style.maxWidth = "calc(100vw - 2rem)";
+            panel.style.maxHeight = "calc(100vh - 6rem)";
+            panel.style.overflowY = "auto";
+            panel.style.zIndex = "60";
+            return;
+        }
+
+        panel.style.removeProperty("left");
+        panel.style.removeProperty("right");
+        panel.style.removeProperty("width");
+        panel.style.removeProperty("max-width");
+        panel.style.removeProperty("max-height");
+        panel.style.removeProperty("overflow-y");
+        panel.style.removeProperty("z-index");
+    }
+
+    function updateMobileMenuStyles(panel) {
+        panel.setAttribute("role", "dialog");
+        panel.setAttribute("aria-label", "主要導覽選單");
+        panel.setAttribute("tabindex", "-1");
+        updateDrawerLayout(panel);
+    }
+
+    function updateActiveLinks() {
+        const desktopLinks = document.querySelectorAll("#navbar [data-navbar-link]");
+        desktopLinks.forEach((link) => {
+            if (!(link instanceof HTMLElement)) return;
+            const href = link.getAttribute("href");
+            if (!href) return;
+            const active = isSamePath(href);
+            link.classList.toggle(ACTIVE_LINK_CLASS, active);
+            link.classList.toggle(ACTIVE_TEXT_CLASS, active);
+            if (active) {
+                link.setAttribute("aria-current", "page");
+            } else {
+                link.removeAttribute("aria-current");
             }
-        };
-    }
+        });
 
-    let menuBtn = document.getElementById("nav-menu-switch");
-    if (menuBtn) {
-        menuBtn.onclick = function () {
-            let menuPanel = document.getElementById("nav-menu-panel");
-            if (menuPanel) {
-                menuPanel.classList.toggle("float-panel-closed");
+        const mobileLinks = document.querySelectorAll("#nav-menu-panel a");
+        mobileLinks.forEach((link) => {
+            if (!(link instanceof HTMLElement)) return;
+            const href = link.getAttribute("href");
+            if (!href) return;
+            const active = isSamePath(href);
+            link.classList.toggle(ACTIVE_LINK_CLASS, active);
+            link.classList.toggle(ACTIVE_TEXT_CLASS, active);
+            link.classList.toggle("font-semibold", active);
+            if (active) {
+                link.setAttribute("aria-current", "page");
+            } else {
+                link.removeAttribute("aria-current");
             }
-        };
+        });
     }
-}
 
-loadButtonScript();
+    function applyMenuState(open, options = { focus: true, restoreFocus: true }) {
+        const { button, panel, backdrop } = getMenuElements();
+        if (!button || !panel || !backdrop) return;
+
+        isUpdatingMenuState = true;
+        menuOpen = open;
+
+        panel.classList.toggle("float-panel-closed", !open);
+        backdrop.classList.toggle("hidden", !open);
+        button.setAttribute("aria-expanded", String(open));
+        panel.setAttribute("aria-hidden", String(!open));
+        updateMobileMenuStyles(panel);
+        document.body.style.overflow = open ? "hidden" : "";
+
+        if (open && options.focus) {
+            focusFirstMenuItem(panel);
+        }
+
+        if (!open && options.restoreFocus) {
+            button.focus({ preventScroll: true });
+        }
+
+        isUpdatingMenuState = false;
+    }
+
+    function syncMenuStateFromDom() {
+        const { panel } = getMenuElements();
+        if (!panel || isUpdatingMenuState) return;
+        const open = !panel.classList.contains("float-panel-closed");
+        if (open !== menuOpen) {
+            applyMenuState(open, { focus: false, restoreFocus: false });
+            return;
+        }
+        updateMobileMenuStyles(panel);
+    }
+
+    function toggleMenu() {
+        applyMenuState(!menuOpen);
+    }
+
+    function closeMenu() {
+        applyMenuState(false);
+    }
+
+    function handleScroll() {
+        if (menuOpen) return;
+
+        const navbar = document.getElementById("navbar");
+        if (!navbar) return;
+
+        const currentScrollY = window.scrollY;
+        if (currentScrollY <= 8 || currentScrollY < lastScrollY) {
+            navbar.classList.remove("navbar-hidden");
+        } else if (currentScrollY > 72 && currentScrollY > lastScrollY) {
+            navbar.classList.add("navbar-hidden");
+        }
+
+        lastScrollY = currentScrollY;
+    }
+
+    function handleScrollEvent() {
+        if (scrollFrame) return;
+        scrollFrame = window.requestAnimationFrame(() => {
+            scrollFrame = 0;
+            handleScroll();
+        });
+    }
+
+    function trapMenuFocus(event) {
+        if (!menuOpen || event.key !== "Tab") return;
+
+        const { panel } = getMenuElements();
+        if (!panel) return;
+
+        const focusable = getFocusableElements(panel);
+        if (focusable.length === 0) {
+            event.preventDefault();
+            panel.focus({ preventScroll: true });
+            return;
+        }
+
+        const firstFocusable = focusable[0];
+        const lastFocusable = focusable[focusable.length - 1];
+        const activeElement = document.activeElement;
+
+        if (event.shiftKey && activeElement === firstFocusable) {
+            event.preventDefault();
+            lastFocusable.focus({ preventScroll: true });
+        } else if (!event.shiftKey && activeElement === lastFocusable) {
+            event.preventDefault();
+            firstFocusable.focus({ preventScroll: true });
+        }
+    }
+
+    function loadButtonScript() {
+        const switchBtn = document.getElementById("scheme-switch");
+        if (switchBtn) {
+            switchBtn.onclick = function () {
+                switchTheme();
+            };
+        }
+
+        const settingBtn = document.getElementById("display-settings-switch");
+        if (settingBtn) {
+            settingBtn.onclick = function () {
+                const settingPanel = document.getElementById("display-setting");
+                if (settingPanel) {
+                    settingPanel.classList.toggle("float-panel-closed");
+                }
+            };
+        }
+
+        const menuBtn = document.getElementById("nav-menu-switch");
+        const menuPanel = document.getElementById("nav-menu-panel");
+        const backdrop = document.getElementById("nav-menu-backdrop");
+
+        if (menuBtn && menuPanel && backdrop) {
+            updateMobileMenuStyles(menuPanel);
+            menuBtn.onclick = function () {
+                toggleMenu();
+            };
+            backdrop.onclick = function () {
+                closeMenu();
+            };
+
+            menuObserver = new MutationObserver(() => {
+                syncMenuStateFromDom();
+                updateActiveLinks();
+            });
+            menuObserver.observe(menuPanel, { attributes: true, attributeFilter: ["class"] });
+        }
+
+        document.addEventListener("keydown", (event) => {
+            if (!menuOpen) return;
+
+            if (event.key === "Escape") {
+                event.preventDefault();
+                closeMenu();
+                return;
+            }
+
+            trapMenuFocus(event);
+        });
+
+        window.addEventListener("scroll", handleScrollEvent, { passive: true });
+        window.addEventListener("resize", syncMenuStateFromDom);
+
+        const syncOnSwup = () => {
+            updateActiveLinks();
+            syncMenuStateFromDom();
+            handleScroll();
+        };
+
+        if (window?.swup?.hooks) {
+            window.swup.hooks.on("content:replace", syncOnSwup);
+        } else {
+            document.addEventListener("swup:enable", () => {
+                window.swup?.hooks.on("content:replace", syncOnSwup);
+            }, { once: true });
+        }
+
+        updateActiveLinks();
+        syncMenuStateFromDom();
+        handleScroll();
+    }
+
+    loadButtonScript();
 </script>
 
 {import.meta.env.PROD && <script is:inline define:vars={{scriptUrl: url('/pagefind/pagefind.js')}}>

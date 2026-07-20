@@ -14,7 +14,7 @@ if (!aboutPost) {
 
 const { Content } = await render(aboutPost);
 ---
-<MainGridLayout title={i18n(I18nKey.about)} description={i18n(I18nKey.about)}>
+<MainGridLayout title="社團介紹" description="認識CLSC的社團定位、核心特色與學期內容。" breadcrumbs={[{ name: "首頁", url: "/" }, { name: "社團介紹", url: "/about/" }]} canonical={Astro.url.pathname}>
     <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32">
         <div class="card-base z-10 px-9 py-6 relative w-full ">
             <Markdown class="mt-2">
